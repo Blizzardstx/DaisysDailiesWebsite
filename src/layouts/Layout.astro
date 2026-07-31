@@ -13,11 +13,15 @@ const { title, description = "Daisy's Dailies — organize your errands, appoint
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href="/icon.png" />
+		<link rel="apple-touch-icon" href="/icon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content="/icon.png" />
+		<meta property="og:type" content="website" />
 		<title>{title}</title>
 	</head>
 	<body>

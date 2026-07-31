@@ -1,10 +1,128 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const APP_STORE_URL = 'https://apps.apple.com/app/id6758970280';
+const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.sibertstrategygroup.daisysdailies';
+
+const features = [
+	{
+		emoji: '🌸',
+		title: 'Visual planning',
+		body: 'Every errand becomes a petal on your flower. See your whole day at a glance, not a wall of checkboxes.',
+	},
+	{
+		emoji: '👨‍👩‍👧‍👦',
+		title: 'Family sharing',
+		body: 'Assign stops, split the list, and stay in sync with up to 10 people in your household.',
+	},
+	{
+		emoji: '🗺️',
+		title: 'Route planning',
+		body: 'Optimize the order of your stops and see real travel times between them before you leave the house.',
+	},
+	{
+		emoji: '🛡️',
+		title: 'Privacy first',
+		body: 'No ads. No data sales. Ever. Pro members keep the lights on — that’s how we stay independent.',
+	},
+];
 ---
 
-<Layout title="Daisy's Dailies">
-	<main class="flex min-h-screen flex-col items-center justify-center bg-white px-6 text-center">
-		<h1 class="text-4xl font-bold text-gray-900">Daisy's Dailies</h1>
-		<p class="mt-4 max-w-md text-lg text-gray-600">Marketing site scaffold — Tailwind is wired up. Build the real homepage here.</p>
+<Layout
+	title="Daisy's Dailies — Visual Daily Planner for Families"
+	description="Turn your errands into a flower. Daisy's Dailies is the visual way for families to plan daily tasks, appointments, and routes together."
+>
+	<main class="min-h-screen bg-white">
+		<section class="bg-gradient-to-br from-[#2D3A5C] via-[#3C4664] to-[#4A5578] px-6 py-20 text-center text-white">
+			<img
+				src="/icon.png"
+				alt="Daisy's Dailies app icon"
+				class="mx-auto mb-8 h-28 w-28 rounded-[27px] shadow-2xl"
+				width="112"
+				height="112"
+			/>
+			<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">Daisy's Dailies</h1>
+			<p class="mx-auto mt-4 max-w-xl text-lg text-white/80">
+				Organize your family's daily errands, tasks, and appointments — together.
+			</p>
+			<p class="mx-auto mt-2 max-w-md text-sm text-white/60">
+				Every stop is a petal. Every flower is your day.
+			</p>
+			<div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+				<a
+					href={APP_STORE_URL}
+					class="flex w-56 items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white backdrop-blur transition hover:bg-white/20"
+				>
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+					<span class="text-left leading-tight">
+						<span class="block text-[11px] text-white/70">Download on the</span>
+						<span class="block text-base font-semibold">App Store</span>
+					</span>
+				</a>
+				<a
+					href={PLAY_STORE_URL}
+					class="flex w-56 items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white backdrop-blur transition hover:bg-white/20"
+				>
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.3 2.3-8.636-8.632z"/></svg>
+					<span class="text-left leading-tight">
+						<span class="block text-[11px] text-white/70">Get it on</span>
+						<span class="block text-base font-semibold">Google Play</span>
+					</span>
+				</a>
+			</div>
+		</section>
+
+		<section class="mx-auto max-w-5xl px-6 py-20">
+			<div class="grid gap-8 sm:grid-cols-2">
+				{features.map(feature => (
+					<div class="rounded-2xl border border-gray-100 p-6 shadow-sm">
+						<div class="text-3xl">{feature.emoji}</div>
+						<h3 class="mt-3 text-lg font-semibold text-gray-900">{feature.title}</h3>
+						<p class="mt-2 text-gray-600">{feature.body}</p>
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="bg-gray-50 px-6 py-20">
+			<div class="mx-auto max-w-4xl text-center">
+				<h2 class="text-3xl font-bold text-gray-900">Free to start, upgrade when you're ready</h2>
+				<p class="mx-auto mt-3 max-w-lg text-gray-600">Appointments are included on every plan — no gate, no upsell.</p>
+			</div>
+			<div class="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
+				<div class="rounded-2xl bg-white p-8 shadow-sm">
+					<h3 class="text-xl font-semibold text-gray-900">Free</h3>
+					<p class="mt-1 text-sm text-gray-500">Everything you need to get organized</p>
+					<ul class="mt-6 space-y-3 text-gray-700">
+						<li>5 flowers</li>
+						<li>12 petals per flower</li>
+						<li>2 family members</li>
+						<li>Route planning for up to 5 stops</li>
+						<li>Appointments &amp; address book</li>
+					</ul>
+				</div>
+				<div class="rounded-2xl bg-[#063970] p-8 text-white shadow-sm">
+					<h3 class="text-xl font-semibold">Pro</h3>
+					<p class="mt-1 text-sm text-white/70">For bigger households and bigger days</p>
+					<ul class="mt-6 space-y-3 text-white/90">
+						<li>50 flowers</li>
+						<li>24 petals per flower</li>
+						<li>10 family members</li>
+						<li>Unlimited route stops + AI route optimization</li>
+						<li>Calendar import &amp; sync, real-time travel times</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<footer class="border-t border-gray-100 px-6 py-10 text-center text-sm text-gray-500">
+			<nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+				<a href="/terms-of-service" class="hover:text-gray-800">Terms of Service</a>
+				<a href="/privacy-policy" class="hover:text-gray-800">Privacy Policy</a>
+				<a href="/data-deletion" class="hover:text-gray-800">Data Deletion</a>
+				<a href="/contact-us" class="hover:text-gray-800">Contact Us</a>
+			</nav>
+			<p class="mt-4">&copy; {new Date().getFullYear()} Sibert Strategy Group. All rights reserved.</p>
+		</footer>
 	</main>
 </Layout>
