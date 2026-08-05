@@ -1,0 +1,70 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StoreButtons from '../components/StoreButtons.astro';
+import { APP_STORE_URL, PLAY_STORE_URL, SITE } from '../consts';
+---
+
+<Layout
+	title={`Get ${SITE.name} — Download for iOS & Android`}
+	description={`Download ${SITE.name} on the App Store or Google Play.`}
+	noindex
+>
+	<Fragment slot="head">
+		{/* Runs before paint so mobile visitors redirect without seeing this page flash. */}
+		<script is:inline define:vars={{ appStoreUrl: APP_STORE_URL, playStoreUrl: PLAY_STORE_URL }}>
+			(function () {
+				var ua = navigator.userAgent || navigator.vendor || '';
+				var isIOS =
+					/iPad|iPhone|iPod/.test(ua) ||
+					(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+				var isAndroid = /Android/.test(ua);
+
+				if (isIOS) {
+					window.location.replace(appStoreUrl);
+				} else if (isAndroid) {
+					window.location.replace(playStoreUrl);
+				}
+			})();
+		</script>
+	</Fragment>
+
+	<main
+		id="main"
+		class="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-navy-800 px-5 py-16 text-center text-white sm:px-6"
+	>
+		<div
+			class="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_15%_0%,#3f4d7a_0%,transparent_55%),radial-gradient(90%_70%_at_100%_10%,#4a5fdd33_0%,transparent_60%)]"
+			aria-hidden="true"
+		>
+		</div>
+
+		<div class="relative mx-auto max-w-md">
+			<a href="/" class="inline-flex">
+				<img
+					src="/icon.png"
+					alt=""
+					width="56"
+					height="56"
+					class="h-14 w-14 rounded-2xl shadow-lift"
+				/>
+			</a>
+
+			<h1 class="mt-6 text-3xl font-extrabold leading-tight sm:text-4xl">Get {SITE.name}</h1>
+
+			<p class="mx-auto mt-3 max-w-xs text-white/70">
+				Sending you to the right store for your device — if nothing happens, pick one below.
+			</p>
+
+			<div class="mt-8">
+				<StoreButtons align="center" />
+			</div>
+
+			<a
+				href="/"
+				class="mt-8 inline-block text-sm text-white/60 transition hover:text-white hover:underline"
+			>
+				Back to daisysdailies.com
+			</a>
+		</div>
+	</main>
+</Layout>
