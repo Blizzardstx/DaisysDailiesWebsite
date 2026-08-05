@@ -1,121 +1,508 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import StoreButtons from '../components/StoreButtons.astro';
+import FlowerGraphic from '../components/FlowerGraphic.astro';
+import { SITE } from '../consts';
 
-const APP_STORE_URL = 'https://apps.apple.com/app/id6758970280';
-const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.sibertstrategygroup.daisysdailies';
+const steps = [
+	{
+		number: '01',
+		title: 'Plant a flower',
+		body: 'A flower is one day, one trip, or one project. Name it and it is ready to fill.',
+		color: 'var(--color-petal-sun)',
+	},
+	{
+		number: '02',
+		title: 'Add your petals',
+		body: 'Each petal is a stop with its own list — the pharmacy, the school run, the hardware store.',
+		color: 'var(--color-petal-teal)',
+	},
+	{
+		number: '03',
+		title: 'Head out in order',
+		body: 'Optimize the route, see travel times between stops, and check petals off as you go.',
+		color: 'var(--color-petal-violet)',
+	},
+];
 
 const features = [
 	{
-		emoji: '🌸',
 		title: 'Visual planning',
 		body: 'Every errand becomes a petal on your flower. See your whole day at a glance, not a wall of checkboxes.',
+		color: 'var(--color-petal-sun)',
+		icon: 'flower',
 	},
 	{
-		emoji: '👨‍👩‍👧‍👦',
 		title: 'Family sharing',
 		body: 'Assign stops, split the list, and stay in sync with up to 10 people in your household.',
+		color: 'var(--color-petal-rose)',
+		icon: 'people',
 	},
 	{
-		emoji: '🗺️',
 		title: 'Route planning',
 		body: 'Optimize the order of your stops and see real travel times between them before you leave the house.',
+		color: 'var(--color-petal-teal)',
+		icon: 'route',
 	},
 	{
-		emoji: '🛡️',
+		title: 'Appointments included',
+		body: 'Track appointments and import calendar events on every plan — no gate, no upsell.',
+		color: 'var(--color-petal-sky)',
+		icon: 'calendar',
+	},
+	{
+		title: 'Address book',
+		body: 'Save the places you go back to so adding a stop takes a tap instead of a search.',
+		color: 'var(--color-petal-amber)',
+		icon: 'pin',
+	},
+	{
 		title: 'Privacy first',
 		body: 'No ads. No data sales. Ever. Pro members keep the lights on — that’s how we stay independent.',
+		color: 'var(--color-petal-violet)',
+		icon: 'shield',
+	},
+];
+
+/** Inner markup for each 24×24 feature icon; stroked with `currentColor`. */
+const icons: Record<string, string> = {
+	flower: `<ellipse cx="12" cy="7" rx="2.6" ry="4"/>
+		<ellipse cx="12" cy="17" rx="2.6" ry="4"/>
+		<ellipse cx="7" cy="12" rx="4" ry="2.6"/>
+		<ellipse cx="17" cy="12" rx="4" ry="2.6"/>
+		<circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none"/>`,
+	people: `<circle cx="9" cy="8" r="3.2"/>
+		<path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/>
+		<circle cx="17.3" cy="9.6" r="2.3"/>
+		<path d="M16.4 14.7c2.6-.4 4.6 1.4 4.6 4.1"/>`,
+	route: `<path d="M6 3.5a3 3 0 0 1 3 3c0 2.1-3 5.5-3 5.5S3 8.6 3 6.5a3 3 0 0 1 3-3Z"/>
+		<circle cx="6" cy="6.4" r="1"/>
+		<path d="M18 12.8a3 3 0 0 1 3 3c0 2.1-3 5.5-3 5.5s-3-3.4-3-5.5a3 3 0 0 1 3-3Z"/>
+		<circle cx="18" cy="15.7" r="1"/>
+		<path d="M9.4 8.4h3a3.3 3.3 0 0 1 0 6.6h-2.6a3.3 3.3 0 0 0 0 6.6h4.7" stroke-dasharray="2.8 2.8"/>`,
+	calendar: `<rect x="3.2" y="5" width="17.6" height="16" rx="3.2"/>
+		<path d="M8 3v4M16 3v4M3.2 10.2h17.6"/>
+		<path d="M8.7 14.8l2.1 2.1 4.3-4.3"/>`,
+	pin: `<path d="M12 21.4s7-6.2 7-11.2a7 7 0 1 0-14 0c0 5 7 11.2 7 11.2Z"/>
+		<circle cx="12" cy="10" r="2.6"/>`,
+	shield: `<path d="M12 2.8 4.9 5.8v5.6c0 4.4 3 8.4 7.1 9.8 4.1-1.4 7.1-5.4 7.1-9.8V5.8L12 2.8Z"/>
+		<path d="M8.9 12.1l2.2 2.2 4.2-4.4"/>`,
+};
+
+const freePlan = [
+	'5 flowers',
+	'12 petals per flower',
+	'2 family members',
+	'Route planning for up to 5 stops',
+	'Appointments & address book',
+];
+
+const proPlan = [
+	'50 flowers',
+	'24 petals per flower',
+	'10 family members',
+	'Unlimited route stops + AI route optimization',
+	'Calendar import & sync, real-time travel times',
+];
+
+const faqs = [
+	{
+		q: 'What exactly is a “flower”?',
+		a: 'A flower is a container for one day, trip, or project. Each petal around it is a single stop or task, and each petal holds its own checklist of items. It is the same information a to-do app would show you — just arranged so you can read the whole thing in one glance.',
+	},
+	{
+		q: 'Do I need to pay to use it?',
+		a: 'No. The free tier covers 5 flowers, 12 petals each, 2 family members, and route planning for up to 5 stops. Appointments and calendar event import are included on every tier. Pro raises the limits and adds AI route optimization and real-time travel times.',
+	},
+	{
+		q: 'How does family sharing work?',
+		a: 'One person creates the family and invites the others. Everyone in the family sees the same flowers, petals, and items, so a stop crossed off by one person is crossed off for everyone. Free families hold 2 people; Pro families hold up to 10.',
+	},
+	{
+		q: 'Is my family’s data sold or used for ads?',
+		a: 'Never. There are no ads in the app and we do not sell your data. Pro subscriptions are the only thing funding development, which is exactly why we can keep it that way.',
+	},
+	{
+		q: 'How do I cancel or delete my account?',
+		a: 'Subscriptions are billed by the App Store or Google Play, so you cancel them in your device settings. To remove your data, use Settings → Delete Account in the app, or follow the step-by-step instructions on our data deletion page.',
+	},
+	{
+		q: 'Which devices are supported?',
+		a: 'Daisy’s Dailies runs on iPhone, iPad, and Android phones and tablets. Your data syncs across every device you sign in on.',
 	},
 ];
 ---
 
 <Layout
 	title="Daisy's Dailies — Visual Daily Planner for Families"
-	description="Turn your errands into a flower. Daisy's Dailies is the visual way for families to plan daily tasks, appointments, and routes together."
+	description={SITE.description}
 >
-	<main class="min-h-screen bg-white">
-		<section class="bg-gradient-to-br from-[#2D3A5C] via-[#3C4664] to-[#4A5578] px-6 py-20 text-center text-white">
-			<img
-				src="/icon.png"
-				alt="Daisy's Dailies app icon"
-				class="mx-auto mb-8 h-28 w-28 rounded-[27px] shadow-2xl"
-				width="112"
-				height="112"
-			/>
-			<h1 class="text-4xl font-bold tracking-tight sm:text-5xl">Daisy's Dailies</h1>
-			<p class="mx-auto mt-4 max-w-xl text-lg text-white/80">
-				Organize your family's daily errands, tasks, and appointments — together.
-			</p>
-			<p class="mx-auto mt-2 max-w-md text-sm text-white/60">
-				Every stop is a petal. Every flower is your day.
-			</p>
-			<div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-				<a
-					href={APP_STORE_URL}
-					class="flex w-56 items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white backdrop-blur transition hover:bg-white/20"
-				>
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
-					<span class="text-left leading-tight">
-						<span class="block text-[11px] text-white/70">Download on the</span>
-						<span class="block text-base font-semibold">App Store</span>
-					</span>
-				</a>
-				<a
-					href={PLAY_STORE_URL}
-					class="flex w-56 items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-white backdrop-blur transition hover:bg-white/20"
-				>
-					<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.626L15.206 12l2.492-2.491zM5.864 2.658L16.8 8.99l-2.3 2.3-8.636-8.632z"/></svg>
-					<span class="text-left leading-tight">
-						<span class="block text-[11px] text-white/70">Get it on</span>
-						<span class="block text-base font-semibold">Google Play</span>
-					</span>
-				</a>
-			</div>
-		</section>
+	<SiteHeader />
 
-		<section class="mx-auto max-w-5xl px-6 py-20">
-			<div class="grid gap-8 sm:grid-cols-2">
-				{features.map(feature => (
-					<div class="rounded-2xl border border-gray-100 p-6 shadow-sm">
-						<div class="text-3xl">{feature.emoji}</div>
-						<h3 class="mt-3 text-lg font-semibold text-gray-900">{feature.title}</h3>
-						<p class="mt-2 text-gray-600">{feature.body}</p>
+	<main id="main">
+		<!-- Hero -->
+		<section class="relative overflow-hidden bg-navy-800 text-white">
+			<div
+				class="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_15%_0%,#3f4d7a_0%,transparent_55%),radial-gradient(90%_70%_at_100%_10%,#4a5fdd33_0%,transparent_60%)]"
+				aria-hidden="true"
+			>
+			</div>
+
+			<div
+				class="relative mx-auto grid max-w-6xl items-center gap-14 px-5 py-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:py-24"
+			>
+				<div class="animate-bloom min-w-0 text-center lg:text-left">
+					<p
+						class="eyebrow inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/80"
+					>
+						<span class="inline-block h-1.5 w-1.5 rounded-full bg-petal-sun" aria-hidden="true"
+						></span>
+						On iOS &amp; Android
+					</p>
+
+					<h1 class="mt-6 text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-[3.4rem]">
+						Your family's day,
+						<span
+							class="bg-[linear-gradient(100deg,var(--color-petal-sun),var(--color-petal-rose),var(--color-petal-sky))] bg-clip-text text-transparent"
+						>
+							in full bloom
+						</span>
+					</h1>
+
+					<p class="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-white/75 lg:mx-0">
+						Errands, appointments, and to-dos laid out as petals around a single flower — so
+						everyone can see the whole day without reading a list.
+					</p>
+
+					<div id="download" class="mt-9 scroll-mt-28">
+						<StoreButtons align="start" class="lg:justify-start" />
 					</div>
-				))}
+
+					<ul
+						class="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/60 lg:justify-start"
+					>
+						<li class="flex items-center gap-2">
+							<span class="h-1.5 w-1.5 rounded-full bg-petal-teal" aria-hidden="true"></span>
+							Free to start
+						</li>
+						<li class="flex items-center gap-2">
+							<span class="h-1.5 w-1.5 rounded-full bg-petal-rose" aria-hidden="true"></span>
+							No ads, ever
+						</li>
+						<li class="flex items-center gap-2">
+							<span class="h-1.5 w-1.5 rounded-full bg-petal-lilac" aria-hidden="true"></span>
+							Up to 10 family members
+						</li>
+					</ul>
+				</div>
+
+				<div class="relative mx-auto w-full min-w-0 max-w-md lg:max-w-none">
+					<div
+						class="animate-drift rounded-5xl border border-white/10 bg-white/[0.07] p-5 shadow-lift-lg backdrop-blur-sm sm:p-7"
+					>
+						<FlowerGraphic />
+					</div>
+
+					<div
+						class="absolute -left-2 top-6 rounded-2xl border border-white/15 bg-navy-900/85 px-3.5 py-2.5 shadow-lift backdrop-blur sm:-left-6"
+					>
+						<p class="text-[10px] font-semibold uppercase tracking-widest text-white/50">
+							Saturday
+						</p>
+						<p class="text-sm font-semibold text-white">4 of 12 stops done</p>
+					</div>
+
+					<div
+						class="absolute -right-1 bottom-8 flex items-center gap-2.5 rounded-2xl border border-white/15 bg-navy-900/85 px-3.5 py-2.5 shadow-lift backdrop-blur sm:-right-4"
+					>
+						<span class="h-2.5 w-2.5 rounded-full bg-petal-teal" aria-hidden="true"></span>
+						<p class="text-sm font-semibold text-white">
+							Pharmacy <span class="font-normal text-white/50">· 6 min away</span>
+						</p>
+					</div>
+				</div>
 			</div>
 		</section>
 
-		<section class="bg-gray-50 px-6 py-20">
-			<div class="mx-auto max-w-4xl text-center">
-				<h2 class="text-3xl font-bold text-gray-900">Free to start, upgrade when you're ready</h2>
-				<p class="mx-auto mt-3 max-w-lg text-gray-600">Appointments are included on every plan — no gate, no upsell.</p>
-			</div>
-			<div class="mx-auto mt-12 grid max-w-4xl gap-6 sm:grid-cols-2">
-				<div class="rounded-2xl bg-white p-8 shadow-sm">
-					<h3 class="text-xl font-semibold text-gray-900">Free</h3>
-					<p class="mt-1 text-sm text-gray-500">Everything you need to get organized</p>
-					<ul class="mt-6 space-y-3 text-gray-700">
-						<li>5 flowers</li>
-						<li>12 petals per flower</li>
-						<li>2 family members</li>
-						<li>Route planning for up to 5 stops</li>
-						<li>Appointments &amp; address book</li>
-					</ul>
+		<!-- How it works -->
+		<section id="how-it-works" class="scroll-mt-24 bg-white px-5 py-20 sm:px-6 lg:py-28">
+			<div class="reveal mx-auto max-w-6xl">
+				<div class="max-w-2xl">
+					<p class="eyebrow text-brand-500">How it works</p>
+					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
+						Three steps, then you're out the door
+					</h2>
+					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
+						No setup weekend, no template library. Plan a day in about a minute.
+					</p>
 				</div>
-				<div class="rounded-2xl bg-[#063970] p-8 text-white shadow-sm">
-					<h3 class="text-xl font-semibold">Pro</h3>
-					<p class="mt-1 text-sm text-white/70">For bigger households and bigger days</p>
-					<ul class="mt-6 space-y-3 text-white/90">
-						<li>50 flowers</li>
-						<li>24 petals per flower</li>
-						<li>10 family members</li>
-						<li>Unlimited route stops + AI route optimization</li>
-						<li>Calendar import &amp; sync, real-time travel times</li>
-					</ul>
+
+				<ol class="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+					{
+						steps.map((step, index) => (
+							<li class="relative">
+								{/* Hairline connecting the steps on wide screens. */}
+								{index < steps.length - 1 && (
+									<span
+										class="absolute left-14 right-0 top-6 hidden h-px bg-navy-200 md:block"
+										aria-hidden="true"
+									/>
+								)}
+								<div
+									class="relative flex h-12 w-12 items-center justify-center rounded-2xl text-sm font-extrabold"
+									style={`background-color: color-mix(in srgb, ${step.color} 22%, white); color: color-mix(in srgb, ${step.color} 60%, #16203A)`}
+								>
+									{step.number}
+								</div>
+								<h3 class="mt-5 text-xl font-bold text-navy-900">{step.title}</h3>
+								<p class="mt-2 leading-relaxed text-ink-soft">{step.body}</p>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+
+		<!-- Features -->
+		<section id="features" class="scroll-mt-24 border-y border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28">
+			<div class="reveal mx-auto max-w-6xl">
+				<div class="max-w-2xl">
+					<p class="eyebrow text-brand-500">Features</p>
+					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
+						Everything a busy household actually needs
+					</h2>
+					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
+						Built around real errand days — not around a productivity philosophy.
+					</p>
+				</div>
+
+				<div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+					{
+						features.map((feature) => (
+							<article class="group rounded-4xl border border-navy-100 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-navy-200 hover:shadow-lift">
+								<span
+									class="flex h-12 w-12 items-center justify-center rounded-2xl transition group-hover:scale-105"
+									style={`background-color: color-mix(in srgb, ${feature.color} 20%, white)`}
+								>
+									<svg
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.7"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+										style={`color: color-mix(in srgb, ${feature.color} 72%, #16203A)`}
+										set:html={icons[feature.icon]}
+									/>
+								</span>
+								<h3 class="mt-5 text-lg font-bold text-navy-900">{feature.title}</h3>
+								<p class="mt-2 leading-relaxed text-ink-soft">{feature.body}</p>
+							</article>
+						))
+					}
 				</div>
 			</div>
 		</section>
 
-		<SiteFooter />
+		<!-- Pricing -->
+		<section id="pricing" class="scroll-mt-24 bg-white px-5 py-20 sm:px-6 lg:py-28">
+			<div class="reveal mx-auto max-w-5xl">
+				<div class="mx-auto max-w-2xl text-center">
+					<p class="eyebrow text-brand-500">Pricing</p>
+					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
+						Free to start, upgrade when you're ready
+					</h2>
+					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
+						Appointments are included on every plan — no gate, no upsell.
+					</p>
+				</div>
+
+				<div class="mt-14 grid gap-6 lg:grid-cols-2">
+					<div
+						class="flex flex-col rounded-5xl border border-navy-100 bg-white p-8 shadow-sm sm:p-10"
+					>
+						<h3 class="text-xl font-bold text-navy-900">Free</h3>
+						<p class="mt-1 text-sm text-ink-soft">Everything you need to get organized</p>
+						<p class="mt-6 text-4xl font-extrabold text-navy-900">
+							$0<span class="mt-1 block text-base font-semibold text-navy-400">
+								no card, no trial timer</span
+							>
+						</p>
+						<ul class="mt-8 space-y-3.5">
+							{
+								freePlan.map((item) => (
+									<li class="flex items-start gap-3 text-[15px] text-ink-soft">
+										<svg
+											width="20"
+											height="20"
+											viewBox="0 0 20 20"
+											class="mt-0.5 shrink-0 text-petal-teal"
+											aria-hidden="true"
+										>
+											<circle cx="10" cy="10" r="10" fill="currentColor" opacity="0.16" />
+											<path
+												d="M6 10.2l2.6 2.6L14 7.4"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+										{item}
+									</li>
+								))
+							}
+						</ul>
+						<p class="mt-auto pt-8 text-xs leading-relaxed text-navy-400">
+							Create an account, plant a flower, and start planning. Upgrade later if you
+							outgrow the limits.
+						</p>
+					</div>
+
+					<div
+						class="relative flex flex-col overflow-hidden rounded-5xl bg-navy-900 p-8 text-white shadow-lift-lg sm:p-10"
+					>
+						<div
+							class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(124,91,217,0.45),transparent_65%)]"
+							aria-hidden="true"
+						>
+						</div>
+
+						<div class="relative flex items-center justify-between gap-4">
+							<h3 class="text-xl font-bold">Pro</h3>
+							<span
+								class="rounded-full bg-[linear-gradient(90deg,var(--color-petal-sun),var(--color-petal-rose))] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-navy-900"
+							>
+								Most popular
+							</span>
+						</div>
+						<p class="relative mt-1 text-sm text-white/60">
+							For bigger households and bigger days
+						</p>
+						<p class="relative mt-6 text-4xl font-extrabold">
+							Everything in Free<span class="mt-1 block text-base font-semibold text-white/60"
+								>plus the limits lifted</span
+							>
+						</p>
+						<ul class="relative mt-8 space-y-3.5">
+							{
+								proPlan.map((item) => (
+									<li class="flex items-start gap-3 text-[15px] text-white/85">
+										<svg
+											width="20"
+											height="20"
+											viewBox="0 0 20 20"
+											class="mt-0.5 shrink-0 text-petal-sun"
+											aria-hidden="true"
+										>
+											<circle cx="10" cy="10" r="10" fill="currentColor" opacity="0.22" />
+											<path
+												d="M6 10.2l2.6 2.6L14 7.4"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+											/>
+										</svg>
+										{item}
+									</li>
+								))
+							}
+						</ul>
+						<p class="relative mt-auto pt-8 text-xs leading-relaxed text-white/45">
+							Billed through the App Store or Google Play. Cancel anytime in your device
+							settings.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- FAQ -->
+		<section id="faq" class="scroll-mt-24 border-t border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28">
+			<div class="reveal mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+				<div>
+					<p class="eyebrow text-brand-500">FAQ</p>
+					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
+						Questions, answered
+					</h2>
+					<p class="mt-4 leading-relaxed text-ink-soft">
+						Still stuck? <a
+							href="/contact-us"
+							class="font-semibold text-brand-500 underline-offset-4 hover:underline">Email us</a
+						> — we reply within 24–48 hours.
+					</p>
+				</div>
+
+				<div class="divide-y divide-navy-200/70 border-y border-navy-200/70">
+					{
+						faqs.map((faq) => (
+							<details class="faq group">
+								<summary
+									class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-[17px] font-semibold text-navy-900 transition hover:text-brand-500"
+								>
+									{faq.q}
+									<svg
+										width="20"
+										height="20"
+										viewBox="0 0 20 20"
+										class="shrink-0 text-navy-400 transition duration-300 group-open:rotate-45"
+										aria-hidden="true"
+									>
+										<path
+											d="M10 4v12M4 10h12"
+											stroke="currentColor"
+											stroke-width="1.8"
+											stroke-linecap="round"
+										/>
+									</svg>
+								</summary>
+								<p class="pb-5 pr-8 leading-relaxed text-ink-soft">{faq.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<!-- Closing CTA -->
+		<section class="relative overflow-hidden bg-navy-900 px-5 py-20 text-white sm:px-6 lg:py-24">
+			<div
+				class="pointer-events-none absolute inset-0 bg-[radial-gradient(80%_120%_at_50%_0%,#2c3796_0%,transparent_60%)]"
+				aria-hidden="true"
+			>
+			</div>
+
+			<div class="reveal relative mx-auto max-w-3xl text-center">
+				<img
+					src="/icon.png"
+					alt=""
+					width="72"
+					height="72"
+					class="mx-auto rounded-[20px] shadow-lift-lg"
+					style="height:4.5rem;width:4.5rem"
+				/>
+				<h2 class="mt-7 text-3xl font-extrabold sm:text-4xl">Plan tomorrow in a minute</h2>
+				<p class="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-white/70">
+					Download {SITE.name}, plant your first flower, and see the whole day at a glance.
+				</p>
+				<StoreButtons class="mt-9" />
+			</div>
+		</section>
 	</main>
+
+	<SiteFooter />
 </Layout>
+
+<style>
+	.faq summary::-webkit-details-marker {
+		display: none;
+	}
+</style>

@@ -6,15 +6,16 @@ interface Props {
 const { tone = 'info' } = Astro.props;
 
 const toneClasses: Record<string, string> = {
-	info: 'bg-gray-50',
-	important: 'border-l-4 border-[#063970] bg-blue-50',
-	warning: 'border-l-4 border-red-500 bg-red-50',
+	info: 'border border-navy-100 bg-navy-50/70',
+	important: 'border border-brand-100 border-l-4 border-l-brand-500 bg-brand-50',
+	warning: 'border border-red-100 border-l-4 border-l-petal-coral bg-red-50',
 };
 ---
 
 <div
 	class:list={[
-		'not-prose my-5 rounded-md p-4 text-sm text-gray-700 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:ps-5 [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:text-gray-900 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:ps-5',
+		// Link styling skips `.btn` so button children keep their own colours.
+		'not-prose my-6 rounded-2xl p-5 text-sm leading-relaxed text-ink-soft [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:ps-5 [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:text-navy-900 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:ps-5 [&_a:not(.btn)]:font-medium [&_a:not(.btn)]:text-brand-500 [&_a:not(.btn)]:hover:underline',
 		toneClasses[tone],
 	]}
 >

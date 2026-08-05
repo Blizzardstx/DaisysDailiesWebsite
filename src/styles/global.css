@@ -1,2 +1,214 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/* ---------------------------------------------------------------------------
+   Daisy's Dailies design tokens
+
+   The brand mark is a rainbow daisy on deep indigo. The palette below mirrors
+   that: `ink`/`navy` for surfaces and type, `brand` for interactive accents,
+   and the `petal-*` ramp for the per-feature accents used across the site.
+--------------------------------------------------------------------------- */
+@theme {
+	/* `--font-jakarta` is emitted by Astro's font pipeline (see astro.config.mjs). */
+	--font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system,
+		"Segoe UI", Roboto, sans-serif;
+
+	--color-ink: #131c33;
+	--color-ink-soft: #46527a;
+
+	--color-navy-50: #f2f4fb;
+	--color-navy-100: #e3e7f5;
+	--color-navy-200: #c6cee9;
+	--color-navy-300: #9aa7d2;
+	--color-navy-400: #6f7fb5;
+	--color-navy-500: #4d5c93;
+	--color-navy-600: #3c4664;
+	--color-navy-700: #2d3a5c;
+	--color-navy-800: #1e2745;
+	--color-navy-900: #16203a;
+	--color-navy-950: #0d1428;
+
+	--color-brand-50: #eef2ff;
+	--color-brand-100: #dfe6ff;
+	--color-brand-200: #c2ceff;
+	--color-brand-300: #97abfb;
+	--color-brand-400: #6c83f0;
+	--color-brand-500: #4a5fdd;
+	--color-brand-600: #3846bd;
+	--color-brand-700: #2c3796;
+	--color-brand-800: #063970;
+	--color-brand-900: #0b2545;
+
+	--color-petal-rose: #f5709a;
+	--color-petal-coral: #f2685b;
+	--color-petal-amber: #f59a4b;
+	--color-petal-sun: #f7ce46;
+	--color-petal-lime: #b8ce4f;
+	--color-petal-teal: #3fc5be;
+	--color-petal-sky: #6fc3ea;
+	--color-petal-blue: #4e86d8;
+	--color-petal-violet: #7c5bd9;
+	--color-petal-lilac: #b98bd6;
+
+	--radius-4xl: 1.75rem;
+	--radius-5xl: 2.25rem;
+
+	--shadow-lift: 0 1px 2px rgb(19 28 51 / 0.06), 0 12px 32px -12px rgb(19 28 51 / 0.18);
+	--shadow-lift-lg: 0 2px 4px rgb(19 28 51 / 0.05), 0 28px 60px -20px rgb(19 28 51 / 0.28);
+
+	--animate-bloom: bloom 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	--animate-drift: drift 9s ease-in-out infinite;
+	--animate-spin-slow: spin 60s linear infinite;
+
+	@keyframes bloom {
+		from {
+			opacity: 0;
+			transform: translateY(14px) scale(0.97);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@keyframes drift {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+	}
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+		/* Keep anchored sections clear of the sticky header. */
+		scroll-padding-top: 6rem;
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		background-color: white;
+		color: var(--color-ink);
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	:is(h1, h2, h3, h4) {
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-brand-500);
+		outline-offset: 3px;
+		border-radius: 4px;
+	}
+
+	::selection {
+		background-color: var(--color-brand-200);
+		color: var(--color-navy-900);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.001ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.001ms !important;
+		}
+	}
+}
+
+@layer components {
+	/* Shared button shape so CTAs stay identical across every section. */
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		border-radius: 9999px;
+		padding: 0.75rem 1.5rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		line-height: 1.25rem;
+		white-space: nowrap;
+		transition: background-color 200ms ease-out, border-color 200ms ease-out,
+			color 200ms ease-out, transform 200ms ease-out, box-shadow 200ms ease-out;
+	}
+
+	.btn:hover {
+		transform: translateY(-2px);
+	}
+
+	.btn:active {
+		transform: none;
+	}
+
+	.btn-primary {
+		background-color: var(--color-brand-500);
+		color: white;
+		box-shadow: var(--shadow-lift);
+	}
+
+	.btn-primary:hover {
+		background-color: var(--color-brand-600);
+	}
+
+	.btn-secondary {
+		border: 1px solid var(--color-navy-200);
+		background-color: white;
+		color: var(--color-navy-800);
+	}
+
+	.btn-secondary:hover {
+		border-color: var(--color-navy-300);
+		background-color: var(--color-navy-50);
+	}
+
+	.btn-light {
+		border: 1px solid rgb(255 255 255 / 0.25);
+		background-color: rgb(255 255 255 / 0.12);
+		color: white;
+		backdrop-filter: blur(8px);
+	}
+
+	.btn-light:hover {
+		background-color: rgb(255 255 255 / 0.22);
+	}
+
+	.eyebrow {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	/* Sections fade up as they enter the viewport; see Layout.astro. */
+	.reveal {
+		opacity: 0;
+		transform: translateY(20px);
+		transition: opacity 700ms ease-out, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.reveal.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal {
+			opacity: 1;
+			transform: none;
+		}
+	}
+}

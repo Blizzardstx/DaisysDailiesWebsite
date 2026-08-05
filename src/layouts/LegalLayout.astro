@@ -2,25 +2,97 @@
 import Layout from './Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { NAV_LINKS } from '../consts';
 
 interface Props {
 	title: string;
 	description?: string;
+	/** Short label shown in the breadcrumb and page banner. */
+	heading?: string;
+	kicker?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, heading, kicker = 'Legal' } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '');
+const label =
+	heading ??
+	NAV_LINKS.find((link) => link.href === path)?.label ??
+	title.split('—')[0].trim();
+
+/** Sibling pages, so every legal page links onward instead of dead-ending. */
+const related = [
+	{ href: '/privacy-policy', label: 'Privacy Policy' },
+	{ href: '/terms-of-service', label: 'Terms of Service' },
+	{ href: '/data-deletion', label: 'Data Deletion' },
+	{ href: '/contact-us', label: 'Contact Us' },
+].filter((link) => link.href !== path);
 ---
 
 <Layout title={title} description={description}>
-	<div class="min-h-screen bg-white">
-		<SiteHeader />
-		<main class="mx-auto max-w-3xl px-6 py-12">
-			<article
-				class="prose prose-slate max-w-none prose-headings:text-[#16233f] prose-h1:mb-2 prose-h1:border-b-4 prose-h1:border-[#063970]/20 prose-h1:pb-3 prose-a:text-[#063970] prose-a:no-underline hover:prose-a:underline"
+	<SiteHeader />
+
+	<div class="border-b border-navy-100 bg-navy-50/60">
+		<div
+			class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 px-5 py-6 sm:px-6"
+		>
+			<nav aria-label="Breadcrumb" class="text-sm text-navy-500">
+				<ol class="flex items-center gap-2">
+					<li><a href="/" class="transition hover:text-brand-500">Home</a></li>
+					<li aria-hidden="true" class="text-navy-300">/</li>
+					<li aria-current="page" class="font-medium text-navy-700">{label}</li>
+				</ol>
+			</nav>
+			<p
+				class="eyebrow rounded-full border border-navy-200 bg-white px-3 py-1.5 text-navy-500"
 			>
-				<slot />
-			</article>
-		</main>
-		<SiteFooter />
+				{kicker}
+			</p>
+		</div>
 	</div>
+
+	<main id="main" class="mx-auto max-w-3xl px-5 py-12 sm:px-6">
+		<article
+			class="prose prose-slate max-w-none
+				prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-navy-900
+				prose-h1:mb-3 prose-h1:text-4xl
+				prose-h2:mt-12 prose-h2:border-t prose-h2:border-navy-100 prose-h2:pt-8 prose-h2:text-2xl
+				prose-h3:mt-8 prose-h3:text-lg
+				prose-p:text-ink-soft prose-li:text-ink-soft prose-strong:text-navy-900
+				prose-a:font-medium prose-a:text-brand-500 prose-a:no-underline hover:prose-a:underline
+				prose-hr:border-navy-100"
+		>
+			<slot />
+		</article>
+
+		<aside class="mt-16 rounded-4xl border border-navy-100 bg-navy-50/60 p-7">
+			<h2 class="text-sm font-bold uppercase tracking-[0.14em] text-navy-900">Related pages</h2>
+			<ul class="mt-4 flex flex-wrap gap-2.5">
+				{
+					related.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="inline-flex items-center gap-1.5 rounded-full border border-navy-200 bg-white px-4 py-2 text-sm font-medium text-navy-700 transition hover:-translate-y-0.5 hover:border-navy-300 hover:text-brand-500"
+							>
+								{link.label}
+								<svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+									<path
+										d="M6 3.5 10.5 8 6 12.5"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.6"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</aside>
+	</main>
+
+	<SiteFooter />
 </Layout>
