@@ -1,0 +1,192 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Callout from '../components/Callout.astro';
+---
+
+<LegalLayout
+	title="Data Deletion Instructions — Daisy's Dailies"
+	description="How to delete your data or account from Daisy's Dailies."
+>
+	<h1>Data Deletion Instructions</h1>
+	<p><strong>Last Updated:</strong> April 25, 2026</p>
+
+	<p>At Daisy's Dailies, you have full control over your data. This page explains how to delete your data from our app.</p>
+
+	<h2>1. Delete Specific Data (Keep Your Account)</h2>
+	<p>You can delete individual pieces of data without deleting your entire account:</p>
+
+	<h3>Delete Task Data (Flowers, Petals, Items)</h3>
+	<Callout tone="info">
+		<p><strong>To delete a flower (and all its petals and items):</strong></p>
+		<ol>
+			<li>Open the Daisy's Dailies app</li>
+			<li>Long-press on the flower you want to delete</li>
+			<li>Select "Edit Flower" or tap the settings icon</li>
+			<li>Scroll down and tap "Delete Flower"</li>
+			<li>Confirm the deletion</li>
+		</ol>
+	</Callout>
+
+	<Callout tone="info">
+		<p><strong>To delete a petal (single stop/location):</strong></p>
+		<ol>
+			<li>Open the flower containing the petal</li>
+			<li>Tap on the petal you want to delete</li>
+			<li>In the petal detail modal, tap the settings icon</li>
+			<li>Select "Delete Petal"</li>
+			<li>Confirm the deletion</li>
+		</ol>
+	</Callout>
+
+	<Callout tone="info">
+		<p><strong>To delete individual items from a petal:</strong></p>
+		<ol>
+			<li>Open the petal containing the item</li>
+			<li>Swipe left on the item you want to delete</li>
+			<li>Tap the delete icon</li>
+		</ol>
+	</Callout>
+
+	<h3>Delete Location Data</h3>
+	<Callout tone="info">
+		<ol>
+			<li>Tap on any petal that has a location</li>
+			<li>In the petal detail modal, tap on the location field</li>
+			<li>Clear the location or select "Remove Location"</li>
+			<li>Save your changes</li>
+		</ol>
+	</Callout>
+
+	<h3>Leave a Family</h3>
+	<Callout tone="info">
+		<p><strong>If you're not the family owner:</strong></p>
+		<ol>
+			<li>Go to Settings → Family</li>
+			<li>Tap "Leave Family"</li>
+			<li>Confirm your decision</li>
+		</ol>
+		<p>This removes your access to the family's shared data and removes you from the family member list.</p>
+	</Callout>
+
+	<Callout tone="important">
+		<p><strong>Note:</strong> If you're the family owner, you must either transfer ownership or delete the family before leaving.</p>
+	</Callout>
+
+	<h2>2. Delete Your Account (All Data)</h2>
+	<p>Deleting your account will permanently remove all your data from Daisy's Dailies.</p>
+
+	<h3>What Gets Deleted:</h3>
+	<ul>
+		<li>Your user account and profile information (name, email, avatar)</li>
+		<li>All your preferences and settings</li>
+		<li>Your subscription/purchase history</li>
+		<li>All data you created (flowers, petals, items, locations)</li>
+		<li>Your family membership</li>
+		<li>If you're a family owner: the entire family and all its data</li>
+	</ul>
+
+	<h3>Steps to Delete Your Account:</h3>
+	<Callout tone="info">
+		<ol>
+			<li>Open the Daisy's Dailies app</li>
+			<li>Go to the <strong>Settings</strong> tab (bottom navigation)</li>
+			<li>Scroll down to the "Account" section</li>
+			<li>Tap <strong>"Delete Account"</strong></li>
+			<li>Read the warning carefully</li>
+			<li>If you signed up with email/password: enter your password to confirm</li>
+			<li>If you signed up with Google: re-authenticate with Google to confirm</li>
+			<li>Tap <strong>"Confirm Delete"</strong></li>
+		</ol>
+	</Callout>
+
+	<Callout tone="warning">
+		<p>
+			<strong>⚠️ Warning:</strong> Account deletion is permanent and cannot be undone. All your data
+			will be permanently deleted from our servers within 30 days. If you're a family owner, all
+			family members will lose access to the shared family data.
+		</p>
+	</Callout>
+
+	<h2>3. Data Deletion Timeline</h2>
+	<ul>
+		<li><strong>Immediate:</strong> Data is removed from the app and becomes inaccessible to you and other users</li>
+		<li><strong>Within 30 days:</strong> Data is permanently deleted from all our servers and backups</li>
+		<li><strong>Third-party services:</strong> Data shared with third parties (Google Maps, RevenueCat) follows their respective deletion policies</li>
+	</ul>
+
+	<h2>4. What Happens to Family Data?</h2>
+	<Callout tone="important">
+		<p><strong>If you're a family member (not the owner):</strong></p>
+		<ul>
+			<li>Your personal account data is deleted</li>
+			<li>You're removed from the family member list</li>
+			<li>Data you created (flowers, petals, items) remains with the family</li>
+			<li>Your name is removed from items you added or completed</li>
+		</ul>
+		<p><strong>If you're the family owner:</strong></p>
+		<ul>
+			<li>The entire family is deleted</li>
+			<li>All family members lose access to the shared data</li>
+			<li>All flowers, petals, and items in the family are permanently deleted</li>
+			<li>All family members are notified that the family has been deleted</li>
+		</ul>
+	</Callout>
+
+	<h2>5. Automatic Data Cleanup</h2>
+	<p>Certain data types are automatically deleted to keep your account organized:</p>
+
+	<Callout tone="important">
+		<p>
+			<strong>Appointments:</strong> Appointments are automatically deleted 30 days after their
+			scheduled date. This cleanup runs daily and cannot be undone. If you need to keep a record
+			of past appointments, we recommend noting them elsewhere before the 30-day window expires.
+		</p>
+	</Callout>
+
+	<h2>6. Data Retained After Deletion</h2>
+	<p>For legal and security purposes, we may retain certain data for a limited time:</p>
+	<ul>
+		<li><strong>Support tickets:</strong> Kept for up to 2 years for customer service purposes</li>
+		<li><strong>Transaction records:</strong> Retained as required by law (typically 7 years) for tax and accounting purposes</li>
+		<li><strong>Fraud prevention logs:</strong> May be retained to prevent abuse</li>
+	</ul>
+	<p>This retained data is not accessible through the app and is stored securely in compliance with applicable laws.</p>
+
+	<h2>7. Need Help?</h2>
+	<Callout tone="important">
+		<p>If you're having trouble deleting your data or have questions about the deletion process, please contact us:</p>
+		<ul>
+			<li><strong>Email:</strong> <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a></li>
+			<li><strong>In-app:</strong> Settings → Contact Us</li>
+		</ul>
+		<p>We'll respond within 48 hours and help you delete your data or answer any questions.</p>
+	</Callout>
+
+	<h2>8. Request Data Deletion via Email</h2>
+	<p>If you cannot access the app or prefer to request deletion via email:</p>
+	<Callout tone="info">
+		<ol>
+			<li>Send an email to <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a></li>
+			<li>Use the subject line: "Data Deletion Request"</li>
+			<li>Include the email address associated with your account</li>
+			<li>Specify what you want deleted (entire account or specific data)</li>
+			<li>We'll verify your identity and process your request within 30 days</li>
+		</ol>
+	</Callout>
+
+	<h2>9. Third-Party Services</h2>
+	<p>Daisy's Dailies uses the following third-party services that may retain data according to their own policies:</p>
+	<ul>
+		<li><strong>Firebase (Google):</strong> Authentication and database services - <a href="https://firebase.google.com/support/privacy" target="_blank">Firebase Privacy Policy</a></li>
+		<li><strong>RevenueCat:</strong> Subscription management - <a href="https://www.revenuecat.com/privacy" target="_blank">RevenueCat Privacy Policy</a></li>
+		<li><strong>Google Maps Platform:</strong> Location services - <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a></li>
+	</ul>
+	<p>When you delete your Daisy's Dailies account, we delete your data from our systems, but these third parties maintain their own data retention policies.</p>
+
+	<hr />
+
+	<p class="text-sm text-gray-500">
+		For more information about how we collect, use, and protect your data, please see our
+		<a href="/privacy-policy">Privacy Policy</a>.
+	</p>
+</LegalLayout>

@@ -1,0 +1,63 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import Callout from '../components/Callout.astro';
+---
+
+<LegalLayout
+	title="Contact Us — Daisy's Dailies"
+	description="Get in touch with the Daisy's Dailies team."
+>
+	<h1>Contact Us</h1>
+	<p>
+		We'd love to hear from you! Whether you have a question, found a bug, or have a
+		suggestion to make Daisy's Dailies even better, don't hesitate to reach out.
+	</p>
+
+	<h2>Get in Touch</h2>
+
+	<Callout tone="important">
+		<p><strong>Sibert Strategy Group</strong></p>
+		<p>Email: <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a></p>
+		<a
+			href="mailto:daisysdailies@sibertstrategygroup.com"
+			class="mt-2 inline-block rounded-lg bg-[#063970] px-6 py-3 font-semibold text-white no-underline hover:bg-[#0B2545]"
+		>
+			Send Us an Email
+		</a>
+	</Callout>
+
+	<h2>What We Can Help With</h2>
+
+	<Callout tone="info">
+		<ul>
+			<li><strong>Bug Reports</strong> — Something not working as expected? Let us know and we'll look into it.</li>
+			<li><strong>Feature Requests</strong> — Have an idea that would make the app better? We're all ears.</li>
+			<li><strong>Account Issues</strong> — Trouble signing in, managing your subscription, or deleting your account.</li>
+			<li><strong>General Questions</strong> — Anything else about Daisy's Dailies.</li>
+		</ul>
+	</Callout>
+
+	<h2>Response Time</h2>
+
+	<p>We typically respond within 24–48 hours. To help us assist you faster, please include:</p>
+	<ul>
+		<li>Your device type (iPhone, Android, tablet)</li>
+		<li>A description of the issue or question</li>
+		<li>Any screenshots that might help illustrate the problem</li>
+	</ul>
+
+	<h2>In-App Support</h2>
+
+	<p>
+		You can also contact us directly from within the app by going to 
+		<strong>Settings → Contact Us</strong>. This automatically includes your device and
+		app version info, which helps us troubleshoot faster.
+	</p>
+
+	<hr />
+
+	<p class="text-sm text-gray-500">
+		See also our <a href="/privacy-policy">Privacy Policy</a> and
+		<a href="/terms-of-service">Terms of Service</a>.
+	</p>
+</LegalLayout>

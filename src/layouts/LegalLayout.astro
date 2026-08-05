@@ -1,0 +1,26 @@
+---
+import Layout from './Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+	<div class="min-h-screen bg-white">
+		<SiteHeader />
+		<main class="mx-auto max-w-3xl px-6 py-12">
+			<article
+				class="prose prose-slate max-w-none prose-headings:text-[#16233f] prose-h1:mb-2 prose-h1:border-b-4 prose-h1:border-[#063970]/20 prose-h1:pb-3 prose-a:text-[#063970] prose-a:no-underline hover:prose-a:underline"
+			>
+				<slot />
+			</article>
+		</main>
+		<SiteFooter />
+	</div>
+</Layout>

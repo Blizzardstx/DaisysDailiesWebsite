@@ -1,0 +1,22 @@
+---
+interface Props {
+	tone?: 'info' | 'important' | 'warning';
+}
+
+const { tone = 'info' } = Astro.props;
+
+const toneClasses: Record<string, string> = {
+	info: 'bg-gray-50',
+	important: 'border-l-4 border-[#063970] bg-blue-50',
+	warning: 'border-l-4 border-red-500 bg-red-50',
+};
+---
+
+<div
+	class:list={[
+		'not-prose my-5 rounded-md p-4 text-sm text-gray-700 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:ps-5 [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:text-gray-900 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:ps-5',
+		toneClasses[tone],
+	]}
+>
+	<slot />
+</div>
