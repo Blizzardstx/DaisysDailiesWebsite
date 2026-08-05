@@ -10,13 +10,13 @@ const steps = [
 	{
 		number: '01',
 		title: 'Plant a flower',
-		body: 'A flower is one day, one trip, or one project. Name it and it is ready to fill.',
+		body: 'A flower is one day, one trip, one project, or one category of to-dos. Name it and it is ready to fill.',
 		color: 'var(--color-petal-sun)',
 	},
 	{
 		number: '02',
 		title: 'Add your petals',
-		body: 'Each petal is a stop with its own list — the pharmacy, the school run, the hardware store.',
+		body: 'Petals can be a stop with its own list — the pharmacy, the school run, the hardware store.',
 		color: 'var(--color-petal-teal)',
 	},
 	{
@@ -48,19 +48,19 @@ const features = [
 	},
 	{
 		title: 'Appointments included',
-		body: 'Track appointments and import calendar events on every plan — no gate, no upsell.',
+		body: 'Track appointments on every plan, no gate, no upsell. Add Pro and it becomes set-it-and-forget-it — synced automatically with your phone’s calendar, so new appointments show up without you lifting a finger.',
 		color: 'var(--color-petal-sky)',
 		icon: 'calendar',
 	},
 	{
-		title: 'Address book',
-		body: 'Save the places you go back to so adding a stop takes a tap instead of a search.',
+		title: 'Family notifications',
+		body: 'Everyone gets a nudge when a stop is assigned or a petal is checked off, so no one has to ask “did you get that?”',
 		color: 'var(--color-petal-amber)',
-		icon: 'pin',
+		icon: 'bell',
 	},
 	{
 		title: 'Privacy first',
-		body: 'No ads. No data sales. Ever. Pro members keep the lights on — that’s how we stay independent.',
+		body: 'No ads. No data sales. Pro members keep the lights on — that’s how we stay independent.',
 		color: 'var(--color-petal-violet)',
 		icon: 'shield',
 	},
@@ -85,8 +85,8 @@ const icons: Record<string, string> = {
 	calendar: `<rect x="3.2" y="5" width="17.6" height="16" rx="3.2"/>
 		<path d="M8 3v4M16 3v4M3.2 10.2h17.6"/>
 		<path d="M8.7 14.8l2.1 2.1 4.3-4.3"/>`,
-	pin: `<path d="M12 21.4s7-6.2 7-11.2a7 7 0 1 0-14 0c0 5 7 11.2 7 11.2Z"/>
-		<circle cx="12" cy="10" r="2.6"/>`,
+	bell: `<path d="M12 3.5c-2.7 0-4.6 2.1-4.6 4.8v3c0 .9-.4 1.7-1 2.4l-.9 1a1 1 0 0 0 .7 1.7h11.6a1 1 0 0 0 .7-1.7l-.9-1c-.6-.7-1-1.5-1-2.4v-3c0-2.7-1.9-4.8-4.6-4.8Z"/>
+		<path d="M9.7 19.5a2.6 2.6 0 0 0 4.6 0"/>`,
 	shield: `<path d="M12 2.8 4.9 5.8v5.6c0 4.4 3 8.4 7.1 9.8 4.1-1.4 7.1-5.4 7.1-9.8V5.8L12 2.8Z"/>
 		<path d="M8.9 12.1l2.2 2.2 4.2-4.4"/>`,
 };
@@ -96,7 +96,7 @@ const freePlan = [
 	'12 petals per flower',
 	'2 family members',
 	'Route planning for up to 5 stops',
-	'Appointments & address book',
+	'Appointments & notifications',
 ];
 
 const proPlan = [
@@ -122,7 +122,7 @@ const faqs = [
 	},
 	{
 		q: 'Is my family’s data sold or used for ads?',
-		a: 'Never. There are no ads in the app and we do not sell your data. Pro subscriptions are the only thing funding development, which is exactly why we can keep it that way.',
+		a: 'No. There are no ads in the app and we do not sell your data. Pro subscriptions are the only thing funding development, which is exactly why we can keep it that way.',
 	},
 	{
 		q: 'How do I cancel or delete my account?',
@@ -189,7 +189,7 @@ const faqs = [
 						</li>
 						<li class="flex items-center gap-2">
 							<span class="h-1.5 w-1.5 rounded-full bg-petal-rose" aria-hidden="true"></span>
-							No ads, ever
+							No ads
 						</li>
 						<li class="flex items-center gap-2">
 							<span class="h-1.5 w-1.5 rounded-full bg-petal-lilac" aria-hidden="true"></span>
@@ -230,6 +230,15 @@ const faqs = [
 							<span class="h-2.5 w-2.5 rounded-full bg-petal-rose" aria-hidden="true"></span>
 							<p class="text-sm font-semibold text-white">
 								Pick up kiddos <span class="font-normal text-white/50">· 3:00pm</span>
+							</p>
+						</div>
+
+						<div
+							class="flex items-center gap-2.5 rounded-2xl border border-white/15 bg-navy-900/85 px-3.5 py-2.5 shadow-lift backdrop-blur"
+						>
+							<span class="h-2.5 w-2.5 rounded-full bg-petal-violet" aria-hidden="true"></span>
+							<p class="text-sm font-semibold text-white">
+								Dinner date <span class="font-normal text-white/50">· 6:00pm</span>
 							</p>
 						</div>
 					</div>
@@ -329,7 +338,7 @@ const faqs = [
 						Free to start, upgrade when you're ready
 					</h2>
 					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
-						Appointments are included on every plan — no gate, no upsell.
+						Notifications are included on every plan — no gate, no upsell.
 					</p>
 				</div>
 
