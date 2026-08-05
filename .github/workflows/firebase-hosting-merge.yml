@@ -13,18 +13,24 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Actions are pinned to commit SHAs, not tags: a tag can be moved to
+      # point at new code, a SHA cannot. Comments record the human-readable
+      # version so upgrades stay reviewable.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '22'
           cache: npm
 
-      - run: npm install
+      # `ci`, not `install`: installs exactly what package-lock.json pins, so a
+      # freshly published version of any transitive dependency cannot reach a
+      # production deploy without a reviewed lockfile change.
+      - run: npm ci
       - run: npm run build
 
       - id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@c200f3691d83b41bf9bbd8638997a462592937ed # v2
         with:
           project_id: daisysdailies
           workload_identity_provider: projects/244424849672/locations/global/workloadIdentityPools/github-actions-pool/providers/github-provider

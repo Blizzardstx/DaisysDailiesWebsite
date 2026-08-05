@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE } from '../consts';
+
+/** Handful of real destinations, so a dead URL still leads somewhere useful. */
+const suggestions = [
+	{ href: '/', label: 'Home' },
+	{ href: '/download', label: 'Get the app' },
+	{ href: '/contact-us', label: 'Contact us' },
+	{ href: '/privacy-policy', label: 'Privacy Policy' },
+];
+---
+
+<Layout
+	title={`Page not found — ${SITE.name}`}
+	description="That page doesn't exist. Here are a few places to go instead."
+	noindex
+>
+	<SiteHeader />
+
+	<main id="main" class="mx-auto flex max-w-2xl flex-col items-center px-5 py-24 text-center sm:px-6">
+		<p class="eyebrow text-brand-500">Error 404</p>
+
+		<h1 class="mt-3 text-4xl font-extrabold tracking-tight text-navy-900 sm:text-5xl">
+			This page wandered off
+		</h1>
+
+		<p class="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">
+			The link may be out of date, or the address might have a typo in it.
+		</p>
+
+		<div class="mt-9 flex flex-wrap justify-center gap-3">
+			<a href="/" class="btn btn-primary">Back to home</a>
+			<a href="/download" class="btn btn-secondary">Get the app</a>
+		</div>
+
+		<nav aria-label="Suggested pages" class="mt-14 w-full border-t border-navy-100 pt-8">
+			<h2 class="text-sm font-bold uppercase tracking-[0.14em] text-navy-900">
+				Or try one of these
+			</h2>
+			<ul class="mt-4 flex flex-wrap justify-center gap-2.5">
+				{
+					suggestions.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="inline-flex items-center rounded-full border border-navy-200 bg-white px-4 py-2 text-sm font-medium text-navy-700 transition hover:-translate-y-0.5 hover:border-navy-300 hover:text-brand-500"
+							>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</main>
+
+	<SiteFooter />
+</Layout>
