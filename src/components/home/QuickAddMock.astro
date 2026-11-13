@@ -1,0 +1,119 @@
+---
+/**
+ * Illustration of Quick Add: one sentence in, one filled-in petal out, with a
+ * review step before anything is saved. Drawn in markup, not a screenshot.
+ */
+import { icons } from './icons';
+---
+
+<div
+	role="img"
+	aria-label="Illustration of Quick Add: the sentence “Dentist for Sam, Tuesday at 4” becomes a petal with the day, time and person filled in, waiting for you to review it."
+	class="rounded-3xl border border-navy-100 bg-navy-50/70 p-4 sm:p-5"
+>
+	<div aria-hidden="true">
+		<div class="flex items-center gap-3 rounded-2xl bg-navy-900 px-4 py-3 shadow-lift">
+			<span
+				class="mic relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-500 text-white"
+			>
+				<svg
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.9"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					set:html={icons.mic}
+				/>
+			</span>
+			<p class="text-[15px] font-semibold leading-snug text-white">
+				“Dentist for Sam, Tuesday at 4”
+			</p>
+		</div>
+
+		<div class="flex justify-center py-2 text-navy-300">
+			<svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+				<path
+					d="M10 3v13M5 11.5l5 5 5-5"
+					stroke="currentColor"
+					stroke-width="1.8"
+					stroke-linecap="round"
+					stroke-linejoin="round"></path>
+			</svg>
+		</div>
+
+		<div class="rounded-2xl border border-navy-100 bg-white p-4 shadow-sm">
+			<div class="flex items-center justify-between gap-3">
+				<p class="flex items-center gap-2.5 text-base font-bold text-navy-900">
+					<span class="h-3 w-3 rounded-full bg-petal-sky"></span>
+					Dentist
+				</p>
+				<span
+					class="rounded-full bg-navy-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-navy-500"
+				>
+					Review
+				</span>
+			</div>
+
+			<div class="mt-3 flex flex-wrap gap-2 text-[13px] font-semibold text-navy-700">
+				<span class="rounded-full bg-brand-50 px-3 py-1.5">Tuesday</span>
+				<span class="rounded-full bg-brand-50 px-3 py-1.5">4:00pm</span>
+				<span class="flex items-center gap-1.5 rounded-full bg-brand-50 py-1.5 pl-1.5 pr-3">
+					<span
+						class="flex h-5 w-5 items-center justify-center rounded-full bg-petal-rose text-[10px] font-extrabold text-white"
+					>
+						S
+					</span>
+					Sam
+				</span>
+			</div>
+
+			<div class="mt-4 flex items-center gap-2">
+				<span class="rounded-full bg-brand-500 px-4 py-2 text-[13px] font-semibold text-white">
+					Add it
+				</span>
+				<span
+					class="rounded-full border border-navy-200 px-4 py-2 text-[13px] font-semibold text-navy-700"
+				>
+					Edit
+				</span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	/* A soft pulse behind the mic, like the hold-to-talk button in the app. */
+	.mic::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: 9999px;
+		background-color: var(--color-brand-400);
+		animation: mic-pulse 2.4s ease-out infinite;
+	}
+
+	.mic svg {
+		position: relative;
+	}
+
+	@keyframes mic-pulse {
+		from {
+			opacity: 0.55;
+			transform: scale(1);
+		}
+		to {
+			opacity: 0;
+			transform: scale(1.8);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.mic::before {
+			animation: none;
+			opacity: 0;
+		}
+	}
+</style>

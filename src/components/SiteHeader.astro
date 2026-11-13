@@ -16,10 +16,10 @@ const isCurrent = (href: string) =>
 	<div
 		class="border-b border-navy-100/80 bg-white/95 backdrop-blur-lg supports-[backdrop-filter]:bg-white/80"
 	>
-		<div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5 sm:px-6">
+		<div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-5 sm:gap-6 sm:px-6">
 			<a href="/" class="group flex shrink-0 items-center gap-2.5">
 				<img
-					src="/icon.png"
+					src="/icon-128.png"
 					alt=""
 					width="36"
 					height="36"
@@ -45,7 +45,13 @@ const isCurrent = (href: string) =>
 			</nav>
 
 			<div class="flex items-center gap-2">
-				<a href="/download" class="btn btn-primary hidden sm:inline-flex">Get the app</a>
+				{/* Compact on phones so it fits beside the logo; dropped only on the very narrowest screens, where the menu still has it. */}
+				<a
+					href="/download"
+					class="btn btn-primary px-3.5 py-2 text-[13px] max-[359px]:hidden sm:px-6 sm:py-3 sm:text-sm"
+				>
+					Get the app
+				</a>
 
 				<button
 					type="button"

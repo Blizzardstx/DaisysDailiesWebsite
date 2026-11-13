@@ -1,0 +1,48 @@
+---
+/**
+ * QR code for https://daisysdailies.com/download, the smart redirect page that
+ * sends a phone to the right store. For visitors on a computer, who cannot
+ * install from where they are. Shown from the `lg` breakpoint up, and written
+ * for dark backgrounds.
+ *
+ * The code is a fixed drawing of that one URL (29×29 modules, error
+ * correction M). If the URL ever changes, regenerate QR_PATH with the
+ * `qrcode` npm package rather than editing it by hand.
+ */
+interface Props {
+	align?: 'start' | 'center';
+	class?: string;
+}
+
+const { align = 'start', class: className = '' } = Astro.props;
+
+const QR_SIZE = 29;
+/** Quiet zone around the code, in modules. Scanners need this margin. */
+const QUIET = 3;
+const QR_PATH =
+	'M0 0h7v1h-7zM13 0h1v1h-1zM16 0h1v1h-1zM18 0h2v1h-2zM22 0h7v1h-7zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM14 1h3v1h-3zM19 1h1v1h-1zM22 1h1v1h-1zM28 1h1v1h-1zM0 2h1v1h-1zM2 2h3v1h-3zM6 2h1v1h-1zM9 2h2v1h-2zM12 2h3v1h-3zM16 2h1v1h-1zM19 2h1v1h-1zM22 2h1v1h-1zM24 2h3v1h-3zM28 2h1v1h-1zM0 3h1v1h-1zM2 3h3v1h-3zM6 3h1v1h-1zM9 3h2v1h-2zM12 3h4v1h-4zM18 3h1v1h-1zM22 3h1v1h-1zM24 3h3v1h-3zM28 3h1v1h-1zM0 4h1v1h-1zM2 4h3v1h-3zM6 4h1v1h-1zM8 4h1v1h-1zM11 4h1v1h-1zM14 4h1v1h-1zM17 4h4v1h-4zM22 4h1v1h-1zM24 4h3v1h-3zM28 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM9 5h1v1h-1zM13 5h1v1h-1zM18 5h3v1h-3zM22 5h1v1h-1zM28 5h1v1h-1zM0 6h7v1h-7zM8 6h1v1h-1zM10 6h1v1h-1zM12 6h1v1h-1zM14 6h1v1h-1zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h7v1h-7zM11 7h1v1h-1zM13 7h2v1h-2zM16 7h3v1h-3zM0 8h1v1h-1zM2 8h1v1h-1zM4 8h1v1h-1zM6 8h1v1h-1zM9 8h3v1h-3zM14 8h4v1h-4zM24 8h1v1h-1zM27 8h1v1h-1zM3 9h3v1h-3zM7 9h1v1h-1zM9 9h3v1h-3zM14 9h2v1h-2zM20 9h1v1h-1zM22 9h1v1h-1zM25 9h1v1h-1zM28 9h1v1h-1zM1 10h1v1h-1zM5 10h2v1h-2zM10 10h1v1h-1zM12 10h2v1h-2zM16 10h1v1h-1zM23 10h1v1h-1zM26 10h3v1h-3zM3 11h3v1h-3zM7 11h3v1h-3zM12 11h1v1h-1zM15 11h6v1h-6zM23 11h1v1h-1zM27 11h1v1h-1zM0 12h2v1h-2zM3 12h1v1h-1zM5 12h2v1h-2zM12 12h1v1h-1zM16 12h3v1h-3zM20 12h4v1h-4zM25 12h1v1h-1zM27 12h2v1h-2zM0 13h1v1h-1zM2 13h1v1h-1zM4 13h2v1h-2zM7 13h2v1h-2zM12 13h2v1h-2zM16 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM25 13h1v1h-1zM28 13h1v1h-1zM2 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM11 14h2v1h-2zM14 14h1v1h-1zM17 14h1v1h-1zM22 14h4v1h-4zM27 14h2v1h-2zM0 15h1v1h-1zM3 15h1v1h-1zM7 15h2v1h-2zM11 15h1v1h-1zM13 15h3v1h-3zM17 15h3v1h-3zM22 15h4v1h-4zM27 15h1v1h-1zM0 16h4v1h-4zM5 16h2v1h-2zM8 16h1v1h-1zM11 16h2v1h-2zM14 16h1v1h-1zM16 16h2v1h-2zM19 16h4v1h-4zM25 16h1v1h-1zM27 16h2v1h-2zM1 17h1v1h-1zM3 17h1v1h-1zM5 17h1v1h-1zM10 17h1v1h-1zM12 17h1v1h-1zM14 17h1v1h-1zM16 17h2v1h-2zM20 17h3v1h-3zM25 17h2v1h-2zM28 17h1v1h-1zM0 18h1v1h-1zM2 18h5v1h-5zM8 18h1v1h-1zM11 18h3v1h-3zM20 18h5v1h-5zM27 18h2v1h-2zM1 19h2v1h-2zM4 19h2v1h-2zM8 19h1v1h-1zM10 19h1v1h-1zM12 19h1v1h-1zM16 19h2v1h-2zM19 19h3v1h-3zM23 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM0 20h1v1h-1zM2 20h2v1h-2zM5 20h2v1h-2zM8 20h1v1h-1zM11 20h1v1h-1zM15 20h3v1h-3zM19 20h6v1h-6zM8 21h2v1h-2zM13 21h1v1h-1zM16 21h1v1h-1zM19 21h2v1h-2zM24 21h1v1h-1zM26 21h3v1h-3zM0 22h7v1h-7zM10 22h3v1h-3zM14 22h1v1h-1zM16 22h2v1h-2zM19 22h2v1h-2zM22 22h1v1h-1zM24 22h2v1h-2zM27 22h2v1h-2zM0 23h1v1h-1zM6 23h1v1h-1zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h6v1h-6zM20 23h1v1h-1zM24 23h2v1h-2zM27 23h2v1h-2zM0 24h1v1h-1zM2 24h3v1h-3zM6 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM14 24h4v1h-4zM20 24h5v1h-5zM28 24h1v1h-1zM0 25h1v1h-1zM2 25h3v1h-3zM6 25h1v1h-1zM10 25h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM16 25h3v1h-3zM23 25h2v1h-2zM26 25h3v1h-3zM0 26h1v1h-1zM2 26h3v1h-3zM6 26h1v1h-1zM8 26h2v1h-2zM11 26h2v1h-2zM16 26h2v1h-2zM23 26h3v1h-3zM28 26h1v1h-1zM0 27h1v1h-1zM6 27h1v1h-1zM12 27h1v1h-1zM14 27h1v1h-1zM16 27h6v1h-6zM23 27h1v1h-1zM27 27h1v1h-1zM0 28h7v1h-7zM8 28h2v1h-2zM11 28h1v1h-1zM13 28h5v1h-5zM19 28h6v1h-6zM27 28h2v1h-2z';
+---
+
+<div
+	class:list={[
+		'hidden items-center gap-4 lg:flex',
+		align === 'center' ? 'justify-center' : 'justify-start',
+		className,
+	]}
+>
+	<svg
+		viewBox={`${-QUIET} ${-QUIET} ${QR_SIZE + QUIET * 2} ${QR_SIZE + QUIET * 2}`}
+		width="96"
+		height="96"
+		role="img"
+		aria-label="QR code that opens the Daisy's Dailies download page"
+		class="h-24 w-24 shrink-0 rounded-2xl bg-white shadow-lift"
+		shape-rendering="crispEdges"
+	>
+		<path d={QR_PATH} fill="#16203A"></path>
+	</svg>
+	<p class="max-w-[13rem] text-left text-sm leading-relaxed text-white/70">
+		<span class="block font-semibold text-white">On a computer?</span>
+		Point your phone’s camera here to get the app.
+	</p>
+</div>

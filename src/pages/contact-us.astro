@@ -1,6 +1,29 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
 import Callout from '../components/Callout.astro';
+import { SITE } from '../consts';
+
+const mailto = (subject: string) =>
+	`mailto:${SITE.email}?subject=${encodeURIComponent(`${SITE.name} — ${subject}`)}`;
+
+const topics = [
+	{
+		label: 'Bug report',
+		description: 'Something not working as expected? Tell us what happened.',
+	},
+	{
+		label: 'Feature request',
+		description: 'Have an idea for the app? We read every one.',
+	},
+	{
+		label: 'Account help',
+		description: 'Trouble signing in, managing your subscription, or deleting your account.',
+	},
+	{
+		label: 'Question',
+		description: "Anything else about Daisy's Dailies.",
+	},
+];
 ---
 
 <LegalLayout
@@ -11,49 +34,60 @@ import Callout from '../components/Callout.astro';
 >
 	<h1>Contact Us</h1>
 	<p>
-		We'd love to hear from you! Whether you have a question, found a bug, or have a
-		suggestion to make Daisy's Dailies even better, don't hesitate to reach out.
+		Questions, bug reports and ideas are all welcome. Email us and a person will read it.
+		Most replies take one to two days.
 	</p>
 
 	<h2>Get in Touch</h2>
 
+	<p>
+		For a quick answer, check the <a href="/#faq">FAQ</a> first.
+	</p>
+
 	<Callout tone="important">
 		<p><strong>Sibert Strategy Group</strong></p>
-		<p>Email: <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a></p>
-		<a
-			href="mailto:daisysdailies@sibertstrategygroup.com"
-			class="btn btn-primary mt-3 no-underline"
-		>
+		<p>Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+		<a href={`mailto:${SITE.email}`} class="btn btn-primary mt-3 no-underline">
 			Send Us an Email
 		</a>
 	</Callout>
 
 	<h2>What We Can Help With</h2>
+	<p>Pick the closest topic. It opens your email app with the subject filled in.</p>
 
 	<Callout tone="info">
-		<ul>
-			<li><strong>Bug Reports</strong> — Something not working as expected? Let us know and we'll look into it.</li>
-			<li><strong>Feature Requests</strong> — Have an idea that would make the app better? We're all ears.</li>
-			<li><strong>Account Issues</strong> — Trouble signing in, managing your subscription, or deleting your account.</li>
-			<li><strong>General Questions</strong> — Anything else about Daisy's Dailies.</li>
+		<ul class="!mt-0 grid list-none grid-cols-1 gap-4 !ps-0 sm:grid-cols-2">
+			{
+				topics.map((topic) => (
+					<li class="flex flex-col items-stretch gap-2">
+						<a
+							href={mailto(topic.label)}
+							class="btn btn-secondary w-full no-underline"
+						>
+							{topic.label}
+						</a>
+						<span>{topic.description}</span>
+					</li>
+				))
+			}
 		</ul>
 	</Callout>
 
 	<h2>Response Time</h2>
 
-	<p>We typically respond within 24–48 hours. To help us assist you faster, please include:</p>
+	<p>We usually reply within 24 to 48 hours. To help us help you faster, include:</p>
 	<ul>
 		<li>Your device type (iPhone, Android, tablet)</li>
 		<li>A description of the issue or question</li>
-		<li>Any screenshots that might help illustrate the problem</li>
+		<li>Screenshots, if they help show the problem</li>
 	</ul>
 
 	<h2>In-App Support</h2>
 
 	<p>
-		You can also contact us directly from within the app by going to 
-		<strong>Settings → Contact Us</strong>. This automatically includes your device and
-		app version info, which helps us troubleshoot faster.
+		You can also reach us from the app: go to <strong>Settings → Help &amp; Support → Contact Us</strong>.
+		That opens your email app with your app version and operating system added to the message,
+		which helps us troubleshoot faster.
 	</p>
 
 	<hr />

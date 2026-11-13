@@ -1,0 +1,51 @@
+---
+/**
+ * Illustration of Plan My Week: unscheduled errands each get a proposed day
+ * and a short reason, shown before anything is applied. Sits on a dark card.
+ */
+const plan = [
+	{ day: 'Tue', title: 'Dry cleaning', reason: 'You’re free after 3', color: 'var(--color-petal-sky)' },
+	{ day: 'Thu', title: 'Return package', reason: 'Nothing else that afternoon', color: 'var(--color-petal-lilac)' },
+	{ day: 'Sat', title: 'Hardware store', reason: 'Open morning', color: 'var(--color-petal-sun)' },
+];
+---
+
+<div
+	role="img"
+	aria-label="Illustration of Plan My Week: three unscheduled errands are each given a day and a short reason — dry cleaning on Tuesday, a package return on Thursday, the hardware store on Saturday — with a button to apply the plan."
+	class="rounded-3xl border border-white/10 bg-white/[0.06] p-4 sm:p-5"
+>
+	<div aria-hidden="true">
+		<p class="text-[11px] font-bold uppercase tracking-widest text-white/50">
+			3 errands, no day yet
+		</p>
+
+		<ul class="mt-3 space-y-2.5">
+			{
+				plan.map((stop) => (
+					<li class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.08] px-3.5 py-3">
+						<span
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[12px] font-extrabold text-navy-900"
+							style={`background-color: ${stop.color}`}
+						>
+							{stop.day}
+						</span>
+						<div class="min-w-0">
+							<p class="truncate text-[15px] font-semibold text-white">{stop.title}</p>
+							<p class="truncate text-[12px] text-white/60">{stop.reason}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="mt-4 flex items-center gap-2">
+			<span class="rounded-full bg-white px-4 py-2 text-[13px] font-semibold text-navy-900">
+				Apply plan
+			</span>
+			<span class="rounded-full border border-white/25 px-4 py-2 text-[13px] font-semibold text-white/85">
+				Not now
+			</span>
+		</div>
+	</div>
+</div>

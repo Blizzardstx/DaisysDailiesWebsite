@@ -10,9 +10,12 @@ interface Props {
 	/** Short label shown in the breadcrumb and page banner. */
 	heading?: string;
 	kicker?: string;
+	/** Optional table of contents: links to `#id` anchors inside the slot. */
+	toc?: { id: string; label: string }[];
 }
 
-const { title, description, heading, kicker = 'Legal' } = Astro.props;
+const { title, description, heading, kicker = 'Legal', toc = [] } = Astro.props;
+const hasToc = toc.length > 0;
 
 const path = Astro.url.pathname.replace(/\/$/, '');
 const label =
@@ -33,8 +36,12 @@ const related = [
 	<SiteHeader />
 
 	<div class="border-b border-navy-100 bg-navy-50/60">
+		{/* Widens with <main> on pages that have a sidebar, so the two left edges line up. */}
 		<div
-			class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 px-5 py-6 sm:px-6"
+			class:list={[
+				'mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3 px-5 py-6 sm:px-6',
+				hasToc && 'lg:max-w-[70rem]',
+			]}
 		>
 			<nav aria-label="Breadcrumb" class="text-sm text-navy-500">
 				<ol class="flex items-center gap-2">
@@ -51,7 +58,38 @@ const related = [
 		</div>
 	</div>
 
-	<main id="main" class="mx-auto max-w-3xl px-5 py-12 sm:px-6">
+	<main
+		id="main"
+		class:list={['mx-auto max-w-3xl px-5 py-12 sm:px-6', hasToc && 'lg:max-w-[70rem]']}
+	>
+		{
+			hasToc && (
+				<nav aria-label="On this page" class="lg:hidden">
+					<details class="mb-10 rounded-4xl border border-navy-100 bg-navy-50/60 px-6 py-4">
+						<summary class="cursor-pointer text-sm font-bold uppercase tracking-[0.14em] text-navy-900">
+							On this page
+						</summary>
+						<ul class="mt-4 space-y-2.5">
+							{toc.map((item) => (
+								<li>
+									<a
+										href={`#${item.id}`}
+										class="text-sm text-navy-600 transition hover:text-brand-500"
+									>
+										{item.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</details>
+				</nav>
+			)
+		}
+
+		<div
+			class:list={[hasToc && 'lg:grid lg:grid-cols-[minmax(0,48rem)_16rem] lg:justify-center lg:gap-12']}
+		>
+		<div class="min-w-0">
 		<article
 			class="prose prose-slate max-w-none
 				prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-navy-900
@@ -92,6 +130,35 @@ const related = [
 				}
 			</ul>
 		</aside>
+		</div>
+
+		{
+			hasToc && (
+				<div class="hidden lg:block">
+					<nav
+						aria-label="On this page"
+						class="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-4xl border border-navy-100 bg-navy-50/60 p-6"
+					>
+						<h2 class="text-sm font-bold uppercase tracking-[0.14em] text-navy-900">
+							On this page
+						</h2>
+						<ul class="mt-4 space-y-2.5">
+							{toc.map((item) => (
+								<li>
+									<a
+										href={`#${item.id}`}
+										class="text-sm text-navy-600 transition hover:text-brand-500"
+									>
+										{item.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				</div>
+			)
+		}
+		</div>
 	</main>
 
 	<SiteFooter />

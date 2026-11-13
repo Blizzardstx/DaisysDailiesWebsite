@@ -1,6 +1,19 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
 import Callout from '../components/Callout.astro';
+import { SITE } from '../consts';
+
+const toc = [
+	{ id: 'delete-specific-data', label: 'Delete Specific Data (Keep Your Account)' },
+	{ id: 'delete-your-account', label: 'Delete Your Account' },
+	{ id: 'deletion-timeline', label: 'Data Deletion Timeline' },
+	{ id: 'family-data', label: 'What Happens to Family Data?' },
+	{ id: 'automatic-cleanup', label: 'Automatic Data Cleanup' },
+	{ id: 'data-retained', label: 'Data Retained After Deletion' },
+	{ id: 'need-help', label: 'Need Help?' },
+	{ id: 'request-by-email', label: 'Request Data Deletion via Email' },
+	{ id: 'third-party-services', label: 'Third-Party Services' },
+];
 ---
 
 <LegalLayout
@@ -8,13 +21,14 @@ import Callout from '../components/Callout.astro';
 	description="How to delete your data or account from Daisy's Dailies."
 	heading="Data Deletion"
 	kicker="Your data"
+	toc={toc}
 >
 	<h1>Data Deletion Instructions</h1>
-	<p><strong>Last Updated:</strong> April 25, 2026</p>
+	<p><strong>Last Updated:</strong> November 13, 2026</p>
 
 	<p>At Daisy's Dailies, you have full control over your data. This page explains how to delete your data from our app.</p>
 
-	<h2>1. Delete Specific Data (Keep Your Account)</h2>
+	<h2 id="delete-specific-data">1. Delete Specific Data (Keep Your Account)</h2>
 	<p>You can delete individual pieces of data without deleting your entire account:</p>
 
 	<h3>Delete Task Data (Flowers, Petals, Items)</h3>
@@ -22,11 +36,12 @@ import Callout from '../components/Callout.astro';
 		<p><strong>To delete a flower (and all its petals and items):</strong></p>
 		<ol>
 			<li>Open the Daisy's Dailies app</li>
-			<li>Long-press on the flower you want to delete</li>
-			<li>Select "Edit Flower" or tap the settings icon</li>
-			<li>Scroll down and tap "Delete Flower"</li>
+			<li>Open the flower you want to delete</li>
+			<li>Tap the <strong>⋯</strong> (Flower options) button</li>
+			<li>Tap "Delete Flower"</li>
 			<li>Confirm the deletion</li>
 		</ol>
+		<p>You must always keep at least one flower, so create a new one first if this is your only flower.</p>
 	</Callout>
 
 	<Callout tone="info">
@@ -34,10 +49,10 @@ import Callout from '../components/Callout.astro';
 		<ol>
 			<li>Open the flower containing the petal</li>
 			<li>Tap on the petal you want to delete</li>
-			<li>In the petal detail modal, tap the settings icon</li>
+			<li>In the petal detail, tap the <strong>⋯</strong> (More petal options) button</li>
 			<li>Select "Delete Petal"</li>
-			<li>Confirm the deletion</li>
 		</ol>
+		<p>The petal is deleted right away. An Undo option appears on screen if you change your mind.</p>
 	</Callout>
 
 	<Callout tone="info">
@@ -45,7 +60,7 @@ import Callout from '../components/Callout.astro';
 		<ol>
 			<li>Open the petal containing the item</li>
 			<li>Swipe left on the item you want to delete</li>
-			<li>Tap the delete icon</li>
+			<li>Tap the trash icon</li>
 		</ol>
 	</Callout>
 
@@ -53,51 +68,65 @@ import Callout from '../components/Callout.astro';
 	<Callout tone="info">
 		<ol>
 			<li>Tap on any petal that has a location</li>
-			<li>In the petal detail modal, tap on the location field</li>
-			<li>Clear the location or select "Remove Location"</li>
-			<li>Save your changes</li>
+			<li>In the petal detail, tap the location field (it shows the address)</li>
+			<li>Tap "Clear Location"</li>
 		</ol>
+		<p>The location is removed as soon as you tap "Clear Location".</p>
 	</Callout>
 
 	<h3>Leave a Family</h3>
 	<Callout tone="info">
 		<p><strong>If you're not the family owner:</strong></p>
 		<ol>
-			<li>Go to Settings → Family</li>
+			<li>Go to Settings → Account</li>
 			<li>Tap "Leave Family"</li>
-			<li>Confirm your decision</li>
+			<li>Tap "Leave" to confirm</li>
 		</ol>
 		<p>This removes your access to the family's shared data and removes you from the family member list.</p>
 	</Callout>
 
-	<Callout tone="important">
-		<p><strong>Note:</strong> If you're the family owner, you must either transfer ownership or delete the family before leaving.</p>
-	</Callout>
+	<h2 id="delete-your-account">2. Delete Your Account</h2>
+	<p>
+		Deleting your account permanently removes your account and personal data from Daisy's
+		Dailies. What happens to your family's shared content depends on whether you own the family:
+		only the owner's deletion removes it. See <a href="#family-data">What Happens to Family Data?</a>
+	</p>
 
-	<h2>2. Delete Your Account (All Data)</h2>
-	<p>Deleting your account will permanently remove all your data from Daisy's Dailies.</p>
+	<Callout tone="important">
+		<p>
+			<strong>Want a copy first?</strong> Account deletion is permanent. To save your data before
+			you go, open Settings → Privacy and tap "Export My Data".
+		</p>
+	</Callout>
 
 	<h3>What Gets Deleted:</h3>
 	<ul>
 		<li>Your user account and profile information (name, email, avatar)</li>
 		<li>All your preferences and settings</li>
 		<li>Your subscription/purchase history</li>
-		<li>All data you created (flowers, petals, items, locations)</li>
 		<li>Your family membership</li>
-		<li>If you're a family owner: the entire family and all its data</li>
+		<li>
+			If you're the family owner: the entire family and everything in it, including flowers,
+			petals, items, locations, appointments (including any imported from your device
+			calendar), address book entries, and repeat settings
+		</li>
 	</ul>
+	<p>
+		If you're a family member but not the owner, the content you added to the family (flowers,
+		petals, items, appointments, and address book entries) stays with the family.
+	</p>
 
 	<h3>Steps to Delete Your Account:</h3>
 	<Callout tone="info">
 		<ol>
 			<li>Open the Daisy's Dailies app</li>
-			<li>Go to the <strong>Settings</strong> tab (bottom navigation)</li>
-			<li>Scroll down to the "Account" section</li>
+			<li>Tap the <strong>Settings</strong> (gear) icon in the header</li>
+			<li>Open the "Account" section</li>
 			<li>Tap <strong>"Delete Account"</strong></li>
-			<li>Read the warning carefully</li>
+			<li>Read the warning carefully, type the confirmation number the app shows, and tap <strong>"Delete"</strong></li>
 			<li>If you signed up with email/password: enter your password to confirm</li>
-			<li>If you signed up with Google: re-authenticate with Google to confirm</li>
-			<li>Tap <strong>"Confirm Delete"</strong></li>
+			<li>If you signed up with Google: tap "Continue", then sign in with Google again to confirm</li>
+			<li>If you signed up with Apple: tap "Continue", then sign in with Apple again to confirm</li>
 		</ol>
 	</Callout>
 
@@ -109,21 +138,20 @@ import Callout from '../components/Callout.astro';
 		</p>
 	</Callout>
 
-	<h2>3. Data Deletion Timeline</h2>
+	<h2 id="deletion-timeline">3. Data Deletion Timeline</h2>
 	<ul>
 		<li><strong>Immediate:</strong> Data is removed from the app and becomes inaccessible to you and other users</li>
 		<li><strong>Within 30 days:</strong> Data is permanently deleted from all our servers and backups</li>
-		<li><strong>Third-party services:</strong> Data shared with third parties (Google Maps, RevenueCat) follows their respective deletion policies</li>
+		<li><strong>Third-party services:</strong> Data shared with third parties (Firebase, Sentry, RevenueCat, Google Maps and Gemini, Expo, Aptabase) follows their respective deletion policies. See <a href="#third-party-services">Third-Party Services</a> below.</li>
 	</ul>
 
-	<h2>4. What Happens to Family Data?</h2>
+	<h2 id="family-data">4. What Happens to Family Data?</h2>
 	<Callout tone="important">
 		<p><strong>If you're a family member (not the owner):</strong></p>
 		<ul>
 			<li>Your personal account data is deleted</li>
 			<li>You're removed from the family member list</li>
-			<li>Data you created (flowers, petals, items) remains with the family</li>
-			<li>Your name is removed from items you added or completed</li>
+			<li>Content you created (flowers, petals, items, appointments, and address book entries) remains with the family</li>
 		</ul>
 		<p><strong>If you're the family owner:</strong></p>
 		<ul>
@@ -134,7 +162,7 @@ import Callout from '../components/Callout.astro';
 		</ul>
 	</Callout>
 
-	<h2>5. Automatic Data Cleanup</h2>
+	<h2 id="automatic-cleanup">5. Automatic Data Cleanup</h2>
 	<p>Certain data types are automatically deleted to keep your account organized:</p>
 
 	<Callout tone="important">
@@ -145,7 +173,7 @@ import Callout from '../components/Callout.astro';
 		</p>
 	</Callout>
 
-	<h2>6. Data Retained After Deletion</h2>
+	<h2 id="data-retained">6. Data Retained After Deletion</h2>
 	<p>For legal and security purposes, we may retain certain data for a limited time:</p>
 	<ul>
 		<li><strong>Support tickets:</strong> Kept for up to 2 years for customer service purposes</li>
@@ -154,21 +182,21 @@ import Callout from '../components/Callout.astro';
 	</ul>
 	<p>This retained data is not accessible through the app and is stored securely in compliance with applicable laws.</p>
 
-	<h2>7. Need Help?</h2>
+	<h2 id="need-help">7. Need Help?</h2>
 	<Callout tone="important">
 		<p>If you're having trouble deleting your data or have questions about the deletion process, please contact us:</p>
 		<ul>
-			<li><strong>Email:</strong> <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a></li>
-			<li><strong>In-app:</strong> Settings → Contact Us</li>
+			<li><strong>Email:</strong> <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+			<li><strong>In-app:</strong> Settings → Help &amp; Support → Contact Us</li>
 		</ul>
 		<p>We'll respond within 48 hours and help you delete your data or answer any questions.</p>
 	</Callout>
 
-	<h2>8. Request Data Deletion via Email</h2>
+	<h2 id="request-by-email">8. Request Data Deletion via Email</h2>
 	<p>If you cannot access the app or prefer to request deletion via email:</p>
 	<Callout tone="info">
 		<ol>
-			<li>Send an email to <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a></li>
+			<li>Send an email to <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
 			<li>Use the subject line: "Data Deletion Request"</li>
 			<li>Include the email address associated with your account</li>
 			<li>Specify what you want deleted (entire account or specific data)</li>
@@ -176,12 +204,16 @@ import Callout from '../components/Callout.astro';
 		</ol>
 	</Callout>
 
-	<h2>9. Third-Party Services</h2>
+	<h2 id="third-party-services">9. Third-Party Services</h2>
 	<p>Daisy's Dailies uses the following third-party services that may retain data according to their own policies:</p>
 	<ul>
-		<li><strong>Firebase (Google):</strong> Authentication and database services - <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy Policy</a></li>
-		<li><strong>RevenueCat:</strong> Subscription management - <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener noreferrer">RevenueCat Privacy Policy</a></li>
-		<li><strong>Google Maps Platform:</strong> Location services - <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+		<li><strong>Google Firebase:</strong> Authentication, database hosting (Firestore), and cloud functions - <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener noreferrer">Firebase Privacy Policy</a></li>
+		<li><strong>Sentry:</strong> Crash reporting, error tracking, performance monitoring, and session replays - <a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">Sentry Privacy Policy</a></li>
+		<li><strong>Google Maps &amp; Places API:</strong> Mapping and location search - <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+		<li><strong>Google Gemini:</strong> The app's AI features, used only when you start one - <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a></li>
+		<li><strong>RevenueCat:</strong> In-app subscriptions and purchase validation - <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener noreferrer">RevenueCat Privacy Policy</a></li>
+		<li><strong>Expo:</strong> Push notification delivery - <a href="https://expo.dev/privacy" target="_blank" rel="noopener noreferrer">Expo Privacy Policy</a></li>
+		<li><strong>Aptabase:</strong> Anonymous usage analytics - <a href="https://aptabase.com/legal/privacy" target="_blank" rel="noopener noreferrer">Aptabase Privacy Policy</a></li>
 	</ul>
 	<p>When you delete your Daisy's Dailies account, we delete your data from our systems, but these third parties maintain their own data retention policies.</p>
 

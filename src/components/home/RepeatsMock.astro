@@ -1,0 +1,82 @@
+---
+/**
+ * Illustration of repeats: a checked-off petal that is already scheduled to
+ * come back, beside two that are waiting for their next date.
+ */
+import { icons } from './icons';
+
+const rows = [
+	{ title: 'Trash night', cadence: 'Back Thursday', color: 'var(--color-petal-teal)', done: true },
+	{ title: 'Piano lessons', cadence: 'Every Monday', color: 'var(--color-petal-violet)' },
+	{
+		title: 'Grocery run',
+		cadence: 'Every Saturday',
+		color: 'var(--color-petal-sun)',
+		note: 'List unchecks itself each week',
+	},
+];
+---
+
+<div
+	role="img"
+	aria-label="Illustration of repeating petals: trash night is checked off and set to come back Thursday, piano lessons repeat every Monday, and the grocery run repeats every Saturday with its list unchecked each week."
+	class="rounded-3xl border border-navy-100 bg-navy-50/70 p-4 sm:p-5"
+>
+	<ul aria-hidden="true" class="space-y-2.5">
+		{
+			rows.map((row) => (
+				<li class="rounded-2xl border border-navy-100 bg-white px-4 py-3 shadow-sm">
+					<div class="flex items-center gap-3">
+						{row.done ? (
+							<svg width="20" height="20" viewBox="0 0 20 20" class="shrink-0">
+								<circle cx="10" cy="10" r="10" fill={row.color} />
+								<path
+									d="M6 10.2l2.6 2.6L14 7.4"
+									fill="none"
+									stroke="#fff"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+						) : (
+							<span
+								class="h-5 w-5 shrink-0 rounded-full border-2"
+								style={`border-color: ${row.color}`}
+							/>
+						)}
+
+						{/* Title and cadence share a line when there is room, and stack when there isn't. */}
+						<div class="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
+							<p
+								class:list={[
+									'text-[15px] font-semibold',
+									row.done ? 'text-navy-400 line-through' : 'text-navy-900',
+								]}
+							>
+								{row.title}
+							</p>
+
+							<span class="flex shrink-0 items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[12px] font-semibold text-brand-700">
+								<svg
+									width="12"
+									height="12"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.4"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									set:html={icons.repeat}
+								/>
+								{row.cadence}
+							</span>
+						</div>
+					</div>
+
+					{row.note && <p class="mt-1.5 pl-8 text-[12px] text-navy-500">{row.note}</p>}
+				</li>
+			))
+		}
+	</ul>
+</div>

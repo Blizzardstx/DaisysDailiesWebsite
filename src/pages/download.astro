@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StoreButtons from '../components/StoreButtons.astro';
+import DownloadQr from '../components/DownloadQr.astro';
 import { APP_STORE_URL, PLAY_STORE_URL, SITE } from '../consts';
 ---
 
@@ -41,7 +42,7 @@ import { APP_STORE_URL, PLAY_STORE_URL, SITE } from '../consts';
 		<div class="relative mx-auto max-w-md">
 			<a href="/" class="inline-flex">
 				<img
-					src="/icon.png"
+					src="/icon-128.png"
 					alt=""
 					width="56"
 					height="56"
@@ -58,6 +59,8 @@ import { APP_STORE_URL, PLAY_STORE_URL, SITE } from '../consts';
 			<div class="mt-8">
 				<StoreButtons align="center" />
 			</div>
+
+			<DownloadQr align="center" class="mt-8" />
 
 			<a
 				href="/"

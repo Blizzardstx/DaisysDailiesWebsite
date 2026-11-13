@@ -1,16 +1,37 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
 import Callout from '../components/Callout.astro';
+import { SITE } from '../consts';
+
+/** Section anchors, in page order. Other pages link to these ids. */
+const toc = [
+	{ id: 'acceptance', label: 'Acceptance of Terms' },
+	{ id: 'account-registration', label: 'Account Registration' },
+	{ id: 'use-of-the-service', label: 'Use of the Service' },
+	{ id: 'family-accounts', label: 'Family Accounts' },
+	{ id: 'subscriptions-and-payments', label: 'Subscriptions and Payments' },
+	{ id: 'user-content', label: 'User Content' },
+	{ id: 'data-retention', label: 'Data Retention' },
+	{ id: 'intellectual-property', label: 'Intellectual Property' },
+	{ id: 'third-party-services', label: 'Third-Party Services' },
+	{ id: 'disclaimer-of-warranties', label: 'Disclaimer of Warranties' },
+	{ id: 'limitation-of-liability', label: 'Limitation of Liability' },
+	{ id: 'account-termination', label: 'Account Termination' },
+	{ id: 'changes', label: 'Changes to These Terms' },
+	{ id: 'governing-law', label: 'Governing Law' },
+	{ id: 'contact', label: 'Contact Us' },
+];
 ---
 
 <LegalLayout
 	title="Terms of Service — Daisy's Dailies"
 	description="The terms that govern your use of the Daisy's Dailies mobile app."
 	heading="Terms of Service"
+	toc={toc}
 >
 	<h1>Terms of Service</h1>
 	<p><strong>Effective Date:</strong> March 21, 2026</p>
-	<p><strong>Last Updated:</strong> April 25, 2026</p>
+	<p><strong>Last Updated:</strong> November 13, 2026</p>
 
 	<p>
 		Welcome to Daisy's Dailies. These Terms of Service ("Terms") govern your use of the
@@ -19,7 +40,7 @@ import Callout from '../components/Callout.astro';
 		these Terms.
 	</p>
 
-	<h2>1. Acceptance of Terms</h2>
+	<h2 id="acceptance">1. Acceptance of Terms</h2>
 
 	<p>
 		By accessing or using Daisy's Dailies, you agree to these Terms and our
@@ -27,17 +48,21 @@ import Callout from '../components/Callout.astro';
 		may not use the App.
 	</p>
 
-	<h2>2. Account Registration</h2>
+	<h2 id="account-registration">2. Account Registration</h2>
 
 	<ul>
 		<li>You must provide accurate and complete information when creating an account.</li>
 		<li>You are responsible for maintaining the confidentiality of your login credentials.</li>
 		<li>You are responsible for all activity that occurs under your account.</li>
-		<li>You must be at least 13 years of age to create an account.</li>
+		<li>
+			You must be at least 13 years of age to create an account, or at least 16 if you are
+			located in the European Union. See the Children's Privacy section of our
+			<a href="/privacy-policy#childrens-privacy">Privacy Policy</a>.
+		</li>
 		<li>You may not create an account on behalf of someone else without their permission.</li>
 	</ul>
 
-	<h2>3. Use of the Service</h2>
+	<h2 id="use-of-the-service">3. Use of the Service</h2>
 
 	<h3>A. Permitted Use</h3>
 	<p>
@@ -58,7 +83,7 @@ import Callout from '../components/Callout.astro';
 		<li>Share your account credentials with others</li>
 	</ul>
 
-	<h2>4. Family Accounts</h2>
+	<h2 id="family-accounts">4. Family Accounts</h2>
 
 	<Callout tone="info">
 		<p><strong>Family Owner:</strong> The user who creates a family is the owner and is responsible for managing family membership.</p>
@@ -66,28 +91,57 @@ import Callout from '../components/Callout.astro';
 		<p><strong>Shared Data:</strong> Content created within a family is visible to all family members. You are responsible for the content you create within shared family spaces.</p>
 	</Callout>
 
-	<h2>5. Subscriptions and Payments</h2>
+	<h2 id="subscriptions-and-payments">5. Subscriptions and Payments</h2>
 
 	<h3>A. Free and Pro Tiers</h3>
 	<p>
-		Daisy's Dailies offers a free tier with limited features and a Pro tier with expanded
-		capabilities. Both tiers include access to appointments and calendar event import.
-		Pro-only features include unlimited flowers, petals, and items; route optimization;
-		and AI-powered route ordering. Feature availability and limits may change over time.
+		Daisy's Dailies offers a free tier and a paid Pro tier. The free tier includes planning
+		with flowers and petals, family sharing, appointments, notifications, and route planning,
+		each within limits: for example, on the number of flowers, petals per flower, family
+		members, repeating petals and appointments, and stops in a route. The Pro tier raises
+		those limits and adds further features, such as the full Family Week view, Plan My Week,
+		calendar import and sync, and real-time travel times. Some limits also apply on the Pro
+		tier.
+	</p>
+	<p>
+		The AI features (AI route optimization, Quick Add, and Plan My Week) have usage
+		allowances. Free accounts receive a limited number of AI requests, which does not renew.
+		The Pro tier includes a monthly allowance.
+	</p>
+	<p>
+		The current features and limits of each tier are shown in the App and on our
+		<a href="/#pricing">pricing page</a>. Feature availability and limits may change over time.
 	</p>
 
 	<h3>B. Billing</h3>
 	<ul>
-		<li>Pro subscriptions are billed through the Apple App Store or Google Play Store.</li>
+		<li>
+			The Pro tier is sold as a monthly or yearly subscription, or as a one-time Lifetime
+			purchase, through the Apple App Store or Google Play Store.
+		</li>
 		<li>Payment is charged to your App Store or Play Store account at confirmation of purchase.</li>
 		<li>Subscriptions automatically renew unless canceled at least 24 hours before the end of the current billing period.</li>
 		<li>You can manage and cancel your subscription in your device's settings.</li>
+		<li>
+			A Lifetime purchase is a single payment that does not renew. It gives you lifetime access
+			to Pro.
+		</li>
+		<li>Prices are shown in the App and in the stores before you buy, and may vary by country.</li>
 	</ul>
 
 	<h3>C. Free Trials</h3>
 	<p>
-		We may offer free trial periods for the Pro tier. If you do not cancel before the trial
-		ends, your subscription will automatically convert to a paid subscription.
+		Each new family receives a 14-day trial of the Pro tier. The trial does not require a
+		payment method and does not convert to a paid subscription. When it ends, your family
+		returns to the free tier unless you choose to buy Pro. Nothing you created during the
+		trial is deleted, but the free tier's features and limits apply again; for example,
+		repeating petals and appointments above the free limit are paused. Each family receives
+		the trial once.
+	</p>
+	<p>
+		We may change or end trial offers for new families at any time. If a subscription you buy
+		through the App Store or Google Play includes its own introductory offer, the terms shown
+		at purchase apply, including any automatic renewal.
 	</p>
 
 	<h3>D. Refunds</h3>
@@ -96,7 +150,7 @@ import Callout from '../components/Callout.astro';
 		policies. We do not process refunds directly.
 	</p>
 
-	<h2>6. User Content</h2>
+	<h2 id="user-content">6. User Content</h2>
 
 	<ul>
 		<li>You retain ownership of the content you create in the App (flowers, petals, items, appointments, etc.).</li>
@@ -104,7 +158,7 @@ import Callout from '../components/Callout.astro';
 		<li>We do not claim ownership of your content and do not use it for advertising or marketing purposes.</li>
 	</ul>
 
-	<h2>7. Data Retention</h2>
+	<h2 id="data-retention">7. Data Retention</h2>
 
 	<Callout tone="important">
 		<p><strong>Automatic Data Cleanup:</strong> Certain data types are automatically deleted to keep your account organized:</p>
@@ -114,7 +168,7 @@ import Callout from '../components/Callout.astro';
 		<p>For full details on data retention and deletion, please see our <a href="/data-deletion">Data Deletion Instructions</a>.</p>
 	</Callout>
 
-	<h2>8. Intellectual Property</h2>
+	<h2 id="intellectual-property">8. Intellectual Property</h2>
 
 	<p>
 		The App, including its design, code, graphics, and branding, is owned by Sibert Strategy
@@ -122,16 +176,17 @@ import Callout from '../components/Callout.astro';
 		or create derivative works based on the App.
 	</p>
 
-	<h2>9. Third-Party Services</h2>
+	<h2 id="third-party-services">9. Third-Party Services</h2>
 
 	<p>
 		The App integrates with third-party services including Google Maps, Firebase, RevenueCat,
-		Google Gemini (AI route optimization, Pro only), and SendGrid (support email routing).
+		Google Gemini (the AI features: route optimization, Quick Add, and Plan My Week),
+		Aptabase (anonymous usage analytics), and Expo (push notifications).
 		Your use of these services is subject to their respective terms of service and privacy
 		policies. We are not responsible for the practices of third-party services.
 	</p>
 
-	<h2>10. Disclaimer of Warranties</h2>
+	<h2 id="disclaimer-of-warranties">10. Disclaimer of Warranties</h2>
 
 	<Callout tone="info">
 		<p>
@@ -141,7 +196,7 @@ import Callout from '../components/Callout.astro';
 		</p>
 	</Callout>
 
-	<h2>11. Limitation of Liability</h2>
+	<h2 id="limitation-of-liability">11. Limitation of Liability</h2>
 
 	<p>
 		To the maximum extent permitted by law, Sibert Strategy Group shall not be liable for any
@@ -150,7 +205,7 @@ import Callout from '../components/Callout.astro';
 		or business interruption.
 	</p>
 
-	<h2>12. Account Termination</h2>
+	<h2 id="account-termination">12. Account Termination</h2>
 
 	<ul>
 		<li>You may delete your account at any time through the Settings screen in the App.</li>
@@ -162,7 +217,7 @@ import Callout from '../components/Callout.astro';
 		</li>
 	</ul>
 
-	<h2>13. Changes to These Terms</h2>
+	<h2 id="changes">13. Changes to These Terms</h2>
 
 	<p>
 		We may update these Terms from time to time. When we make changes, we will update the
@@ -171,20 +226,20 @@ import Callout from '../components/Callout.astro';
 		periodically.
 	</p>
 
-	<h2>14. Governing Law</h2>
+	<h2 id="governing-law">14. Governing Law</h2>
 
 	<p>
 		These Terms shall be governed by and construed in accordance with the laws of the United
 		States, without regard to conflict of law principles.
 	</p>
 
-	<h2>15. Contact Us</h2>
+	<h2 id="contact">15. Contact Us</h2>
 
 	<Callout tone="important">
 		<p>If you have any questions about these Terms of Service, please contact us at:</p>
 		<p>
 			<strong>Sibert Strategy Group</strong><br />
-			Email: <a href="mailto:daisysdailies@sibertstrategygroup.com">daisysdailies@sibertstrategygroup.com</a>
+			Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
 		</p>
 	</Callout>
 

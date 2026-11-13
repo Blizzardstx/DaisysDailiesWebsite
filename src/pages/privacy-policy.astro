@@ -1,16 +1,34 @@
 ---
 import LegalLayout from '../layouts/LegalLayout.astro';
 import Callout from '../components/Callout.astro';
+import { SITE } from '../consts';
+
+const toc = [
+	{ id: 'information-we-collect', label: 'Information We Collect' },
+	{ id: 'how-we-use-your-information', label: 'How We Use Your Information' },
+	{ id: 'third-party-services', label: 'Third-Party Services' },
+	{ id: 'data-retention-and-deletion', label: 'Data Retention and Deletion' },
+	{ id: 'childrens-privacy', label: "Children's Privacy" },
+	{ id: 'security', label: 'Security' },
+	{ id: 'your-rights', label: 'Your Rights' },
+	{ id: 'gdpr', label: 'European Union Users (GDPR)' },
+	{ id: 'ccpa', label: 'California Residents (CCPA)' },
+	{ id: 'uk-gdpr', label: 'UK Users (UK GDPR)' },
+	{ id: 'australia-new-zealand', label: 'Australia and New Zealand' },
+	{ id: 'changes', label: 'Changes to This Privacy Policy' },
+	{ id: 'contact', label: 'Contact Us' },
+];
 ---
 
 <LegalLayout
 	title="Privacy Policy — Daisy's Dailies"
 	description="How Daisy's Dailies collects, uses, and protects your data."
 	heading="Privacy Policy"
+	toc={toc}
 >
 	<h1>Privacy Policy</h1>
 	<p><strong>Effective Date:</strong> February 10, 2026</p>
-	<p><strong>Last Updated:</strong> April 25, 2026</p>
+	<p><strong>Last Updated:</strong> November 13, 2026</p>
 
 	<p>
 		Welcome to Daisy's Dailies. Your privacy is critically important to us. This
@@ -19,7 +37,7 @@ import Callout from '../components/Callout.astro';
 		application.
 	</p>
 
-	<h2>1. Information We Collect</h2>
+	<h2 id="information-we-collect">1. Information We Collect</h2>
 
 	<h3>A. Information You Provide to Us</h3>
 
@@ -35,25 +53,33 @@ import Callout from '../components/Callout.astro';
 			entries.
 		</p>
 		<p>
-			<strong>Device Contacts (Pro Only):</strong> If you use the contacts import feature
-			(Pro subscription only), we read your device's address book to display your saved
-			contacts. You select which contacts you want to import into the app. We import
-			and store only the contact name and address that you explicitly select. The
-			imported contact data is synced to our servers and stored in your account. You
-			can delete any imported contact at any time, which removes it from both the app
-			and our servers.
+			<strong>Address Book:</strong> Address book entries are places you add yourself
+			(name, address, notes). The app does not read your device's contacts.
 		</p>
 		<p>
-			<strong>Calendar Data:</strong> If you choose to import calendar events, we read
-			your device calendar to display events for selection. Only the events you explicitly
-			select are copied into the app. We do not store or transmit calendar data you have
-			not selected.
+			<strong>Calendar Data:</strong> If you import calendar events, we read your device
+			calendar to show you its events, and copy only the events you select. If you turn
+			on Calendar Sync (Pro), events from the calendars you choose in Settings are copied
+			automatically when you open the app, and updated when they change. For each event
+			we copy its title, time, duration, and location. We never copy event notes. We do
+			not store or transmit calendar data from calendars or events you have not chosen.
 		</p>
 		<p>
-			<strong>Support Requests:</strong> When you contact us through in-app support, we
-			collect your message, the support topic you select, and device information (device
-			model, operating system version, and app version) to help us diagnose and resolve
-			your issue.
+			<strong>Support Emails:</strong> When you email us (Settings → Contact Us opens
+			your email app), we receive your email address and whatever you write. We use it
+			only to answer you.
+		</p>
+	</Callout>
+
+	<Callout tone="important">
+		<p>
+			<strong>Voice Input (Microphone):</strong> If you hold the microphone button in Quick
+			Add or in the AI route instructions, the app uses your phone's built-in speech
+			recognition to turn what you say into text. Recognition runs entirely on your device:
+			your voice is never recorded, stored, or sent to us or to any third party. Only the
+			resulting text, which you can edit before sending, is used, exactly like text you type.
+			The app asks for microphone and speech recognition permission the first time you press
+			the button, and the button only appears where your phone can recognize speech offline.
 		</p>
 	</Callout>
 
@@ -72,12 +98,27 @@ import Callout from '../components/Callout.astro';
 		<li>
 			<strong>Crash &amp; Performance Data:</strong> Crash reports, stack traces, and performance
 			metrics are collected by Sentry in production builds. Session replays may be captured
-			to help diagnose errors. Your user ID and email are attached to crash reports for attribution.
+			to help diagnose errors. Your user ID, email and display name are attached to crash
+			reports for attribution.
 		</li>
 		<li>
 			<strong>Push Notification Tokens:</strong> If you enable push notifications, we store
-			your device's push token to deliver assignment alerts and daily summaries. Tokens are
-			automatically removed if unused for 30 days.
+			your device's push token to deliver the notifications you have turned on, such as
+			assignment alerts, reminders, and daily and weekly summaries. Tokens are automatically
+			removed if unused for 30 days.
+		</li>
+		<li>
+			<strong>Usage Counts:</strong> We store with your account how many times you have opened
+			the app and on how many days, to understand how the app is used.
+		</li>
+		<li>
+			<strong>Anonymous Usage Analytics:</strong> We use Aptabase, a privacy-focused analytics
+			service, to count app events (for example, that a flower was created or a screen was
+			opened) so we can see which features help. Each event carries the app version, operating
+			system, app language, and a random session ID that resets after an hour of inactivity.
+			Events never include your name, email, user ID, family ID, or anything you type. Aptabase
+			uses your IP address only in memory to determine your country and region, and does not
+			store it.
 		</li>
 	</ul>
 
@@ -100,7 +141,7 @@ import Callout from '../components/Callout.astro';
 		</p>
 	</Callout>
 
-	<h2>2. How We Use Your Information</h2>
+	<h2 id="how-we-use-your-information">2. How We Use Your Information</h2>
 
 	<p>We use the collected data to:</p>
 	<ul>
@@ -108,21 +149,17 @@ import Callout from '../components/Callout.astro';
 		<li>Authenticate your identity and manage your account.</li>
 		<li>Process subscriptions and in-app purchases via RevenueCat.</li>
 		<li>Monitor and analyze app performance and stability (via Sentry).</li>
-		<li>Deliver push notifications for task assignments and daily summaries.</li>
-		<li>Import calendar events you select into the app.</li>
+		<li>Deliver the push notifications you have turned on.</li>
+		<li>Import the calendar events you select, and keep the calendars you choose in sync (Pro).</li>
+		<li>Understand which features are used, through anonymous usage analytics.</li>
+		<li>Answer your emails and troubleshoot technical issues.</li>
 		<li>
-			Import device contacts you select (Pro feature only) and store them in your account
-			for easy reuse when creating petals and appointments.
-		</li>
-		<li>Respond to your support requests and troubleshoot technical issues.</li>
-		<li>
-			Optimize your route order using AI (Pro feature, opt-in only) — stop names, GPS coordinates,
-			and scheduled times are sent to Google Gemini only when you explicitly activate AI route
-			optimization.
+			Provide AI features (AI route optimization, Quick Add, and Plan My Week) using Google
+			Gemini, only when you start them. See Section 3 for exactly what is sent.
 		</li>
 	</ul>
 
-	<h2>3. Third-Party Services</h2>
+	<h2 id="third-party-services">3. Third-Party Services</h2>
 
 	<p>We use trusted third-party service providers to help run the app. These include:</p>
 
@@ -132,18 +169,19 @@ import Callout from '../components/Callout.astro';
 			<li><strong>Sentry:</strong> For crash reporting, error tracking, performance monitoring, and session replays.</li>
 			<li><strong>Google Maps &amp; Places API:</strong> To provide mapping and location search functionality.</li>
 			<li>
-				<strong>Google Gemini:</strong> For AI-powered route optimization (Pro feature, opt-in only).
-				When you explicitly activate AI route optimization, stop names, GPS coordinates, and scheduled
-				times for your selected stops are sent to Google's Gemini API. No data is sent unless you
-				choose to use this feature.
+				<strong>Google Gemini:</strong> For the app's AI features. Nothing is sent unless you
+				start one of them. Free accounts get a limited number of AI requests; Pro includes a
+				monthly allowance.
+				<ul>
+					<li><em>AI route optimization:</em> the names, addresses, coordinates, durations, scheduled times, and priorities of the stops in your route, plus any extra instructions you add.</li>
+					<li><em>Quick Add:</em> the text you type or say, the names of your flowers, your app language, time zone, and today's date. Family members' first names are replaced with placeholders before anything is sent.</li>
+					<li><em>Plan My Week (Pro):</em> the names, times, and durations of the stops being planned, their locations rounded to about 1 km, your available hours, your app language, and time zone.</li>
+				</ul>
+				No account identifiers or family member names are sent to Gemini.
 			</li>
 			<li><strong>RevenueCat:</strong> To manage in-app subscriptions and purchase validation.</li>
 			<li><strong>Expo:</strong> For push notification delivery.</li>
-			<li>
-				<strong>SendGrid:</strong> For routing in-app support ticket notifications to our support team.
-				Your email address, support message, topic, and device information are transmitted via SendGrid
-				when you submit a support request.
-			</li>
+			<li><strong>Aptabase:</strong> For anonymous usage analytics, as described in Section 1B.</li>
 		</ul>
 	</Callout>
 
@@ -154,14 +192,15 @@ import Callout from '../components/Callout.astro';
 		<li><a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener noreferrer">RevenueCat Privacy Policy</a></li>
 		<li><a href="https://sentry.io/privacy/" target="_blank" rel="noopener noreferrer">Sentry Privacy Policy</a></li>
 		<li><a href="https://expo.dev/privacy" target="_blank" rel="noopener noreferrer">Expo Privacy Policy</a></li>
-		<li><a href="https://sendgrid.com/policies/privacy/" target="_blank" rel="noopener noreferrer">SendGrid Privacy Policy</a></li>
+		<li><a href="https://aptabase.com/legal/privacy" target="_blank" rel="noopener noreferrer">Aptabase Privacy Policy</a></li>
 	</ul>
 
-	<h2>4. Data Retention and Deletion</h2>
+	<h2 id="data-retention-and-deletion">4. Data Retention and Deletion</h2>
 
 	<p>
 		We retain your information for as long as your account is active. You can delete any
-		imported contacts at any time, which permanently removes them from our servers.
+		flower, petal, appointment, or address book entry at any time, which removes it from our
+		servers.
 	</p>
 
 	<Callout tone="important">
@@ -186,7 +225,7 @@ import Callout from '../components/Callout.astro';
 		<a href="/data-deletion">Data Deletion Instructions</a> page.
 	</p>
 
-	<h2>5. Children's Privacy</h2>
+	<h2 id="childrens-privacy">5. Children's Privacy</h2>
 
 	<p>
 		Daisy's Dailies is intended for users who are 13 years of age or older. We require all users
@@ -212,11 +251,11 @@ import Callout from '../components/Callout.astro';
 		<strong>If we discover a violation:</strong> If we become aware that a user under the applicable
 		minimum age has created an account, we will promptly delete that account and all associated
 		personal data. Parents or guardians who believe their child has registered may contact us at
-		<a href="mailto:Daisysdailies@sibertstrategygroup.com">Daisysdailies@sibertstrategygroup.com</a>
+		<a href={`mailto:${SITE.email}`}>{SITE.email}</a>
 		to request immediate account deletion.
 	</p>
 
-	<h2>6. Security</h2>
+	<h2 id="security">6. Security</h2>
 
 	<p>
 		We implement industry-standard security measures (such as Firebase's secure authentication
@@ -224,7 +263,7 @@ import Callout from '../components/Callout.astro';
 		transmission is 100% secure.
 	</p>
 
-	<h2>7. Your Rights</h2>
+	<h2 id="your-rights">7. Your Rights</h2>
 
 	<p>Depending on your location, you may have certain rights regarding your personal information, including:</p>
 	<ul>
@@ -237,7 +276,7 @@ import Callout from '../components/Callout.astro';
 
 	<p>To exercise any of these rights, please contact us using the information below.</p>
 
-	<h2>8. European Union Users (GDPR)</h2>
+	<h2 id="gdpr">8. European Union Users (GDPR)</h2>
 
 	<p>
 		If you are located in the European Economic Area (EEA), your personal information is processed
@@ -265,7 +304,7 @@ import Callout from '../components/Callout.astro';
 				<td><strong>Contract</strong> — necessary to provide the service</td>
 			</tr>
 			<tr>
-				<td>User content (flowers, petals, items, appointments, contacts)</td>
+				<td>User content (flowers, petals, items, appointments, address book entries)</td>
 				<td><strong>Contract</strong> — core function of the service</td>
 			</tr>
 			<tr>
@@ -273,8 +312,12 @@ import Callout from '../components/Callout.astro';
 				<td><strong>Legitimate Interests</strong> — maintaining app stability and security</td>
 			</tr>
 			<tr>
-				<td>In-app support messages</td>
+				<td>Support emails</td>
 				<td><strong>Legitimate Interests</strong> — responding to user enquiries</td>
+			</tr>
+			<tr>
+				<td>Usage counts and anonymous usage analytics</td>
+				<td><strong>Legitimate Interests</strong> — understanding which features are used so we can improve the app</td>
 			</tr>
 			<tr>
 				<td>Location data</td>
@@ -286,19 +329,15 @@ import Callout from '../components/Callout.astro';
 			</tr>
 			<tr>
 				<td>Calendar data</td>
-				<td><strong>Consent</strong> — you choose which events to import</td>
-			</tr>
-			<tr>
-				<td>Device contacts (Pro feature)</td>
-				<td><strong>Consent</strong> — you explicitly select which contacts to import from your address book</td>
+				<td><strong>Consent</strong> — you choose which events to import or which calendars to sync</td>
 			</tr>
 			<tr>
 				<td>Sentry session replays</td>
 				<td><strong>Consent</strong> — opt-in toggle in Settings → Privacy</td>
 			</tr>
 			<tr>
-				<td>AI route optimization (Google Gemini)</td>
-				<td><strong>Consent</strong> — you explicitly activate this feature</td>
+				<td>AI features: route optimization, Quick Add, Plan My Week (Google Gemini)</td>
+				<td><strong>Consent</strong> — you start each request yourself</td>
 			</tr>
 		</tbody>
 	</table>
@@ -313,13 +352,13 @@ import Callout from '../components/Callout.astro';
 		<li><strong>Right to Restriction (Art. 18):</strong> Request that we restrict processing of your data while a dispute is resolved.</li>
 		<li><strong>Right to Data Portability (Art. 20):</strong> Receive your data in a structured, machine-readable format via the export feature in Settings.</li>
 		<li><strong>Right to Object (Art. 21):</strong> Object to processing based on legitimate interests. We will cease unless we can demonstrate compelling grounds.</li>
-		<li><strong>Right to Withdraw Consent:</strong> Where processing is based on consent, you may withdraw it at any time (e.g., revoke location permission in your device settings, disable session replay in Settings → Privacy).</li>
+		<li><strong>Right to Withdraw Consent:</strong> Where processing is based on consent, you may withdraw it at any time (e.g., revoke location or microphone permission in your device settings, turn off Calendar Sync or session replay in Settings).</li>
 	</ul>
 
 	<h3>C. International Data Transfers</h3>
 
 	<p>
-		Our service providers (Firebase, Sentry, RevenueCat, SendGrid, Google Gemini) are based in the
+		Our service providers (Firebase, Sentry, RevenueCat, Expo, Google Gemini) are based in the
 		United States. Transfers of personal data from the EEA to these providers are covered by Standard
 		Contractual Clauses (SCCs) as provided by each processor's Data Processing Agreement.
 	</p>
@@ -338,15 +377,16 @@ import Callout from '../components/Callout.astro';
 	<ul>
 		<li><strong>Account data:</strong> Retained until account deletion</li>
 		<li><strong>User content (flowers, petals, items):</strong> Retained until deleted by you or account deletion</li>
-		<li><strong>Imported contacts:</strong> Retained until deleted by you or account deletion</li>
+		<li><strong>Address book entries:</strong> Retained until deleted by you or account deletion</li>
 		<li><strong>Appointments:</strong> Auto-deleted 30 days after scheduled date</li>
 		<li><strong>Push notification tokens:</strong> Auto-deleted after 30 days of inactivity</li>
-		<li><strong>Support messages:</strong> Retained up to 2 years for customer service purposes</li>
+		<li><strong>Support emails:</strong> Retained up to 2 years for customer service purposes</li>
+		<li><strong>Anonymous usage analytics (Aptabase):</strong> Retained up to 5 years; these events cannot be linked to you</li>
 		<li><strong>Transaction records:</strong> Retained as required by law (typically 7 years)</li>
 		<li><strong>Crash logs (Sentry):</strong> Retained per Sentry's 90-day default retention</li>
 	</ul>
 
-	<h2>10. California Residents (CCPA)</h2>
+	<h2 id="ccpa">9. California Residents (CCPA)</h2>
 
 	<p>
 		If you are a California resident, the California Consumer Privacy Act (CCPA) grants you the
@@ -371,12 +411,12 @@ import Callout from '../components/Callout.astro';
 
 	<p>
 		To exercise your rights under the CCPA, please contact us at
-		<a href="mailto:Daisysdailies@sibertstrategygroup.com">Daisysdailies@sibertstrategygroup.com</a>
+		<a href={`mailto:${SITE.email}`}>{SITE.email}</a>
 		with the subject line "California Privacy Request." We will respond within 45 days of receiving
 		your request.
 	</p>
 
-	<h2>11. UK Users (UK GDPR)</h2>
+	<h2 id="uk-gdpr">10. UK Users (UK GDPR)</h2>
 
 	<p>
 		If you are located in the United Kingdom, your personal information is processed in accordance
@@ -384,7 +424,7 @@ import Callout from '../components/Callout.astro';
 	</p>
 
 	<p>
-		You have the same rights as EU users described in Section 7 of this policy, enforceable under
+		You have the same rights as EU users described in Section 8 of this policy, enforceable under
 		UK law. These include the right to access, correct, delete, restrict processing, port your data,
 		and object to processing.
 	</p>
@@ -396,10 +436,10 @@ import Callout from '../components/Callout.astro';
 
 	<p>
 		For any UK-specific data enquiries, please contact us at
-		<a href="mailto:Daisysdailies@sibertstrategygroup.com">Daisysdailies@sibertstrategygroup.com</a>.
+		<a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
 	</p>
 
-	<h2>12. Australia and New Zealand</h2>
+	<h2 id="australia-new-zealand">11. Australia and New Zealand</h2>
 
 	<h3>Australia — Australian Privacy Act 1988</h3>
 
@@ -412,7 +452,7 @@ import Callout from '../components/Callout.astro';
 		You have the right to access the personal information we hold about you and to request corrections
 		if that information is inaccurate, out of date, incomplete, or misleading. To make such a request,
 		please contact us at
-		<a href="mailto:Daisysdailies@sibertstrategygroup.com">Daisysdailies@sibertstrategygroup.com</a>.
+		<a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
 	</p>
 
 	<Callout tone="important">
@@ -432,12 +472,12 @@ import Callout from '../components/Callout.astro';
 		(IPPs). In the event of a notifiable privacy breach that poses a risk of serious harm, we will notify
 		the New Zealand Privacy Commissioner and affected individuals as soon as practicable. New Zealand
 		users may direct privacy complaints or access requests to us at
-		<a href="mailto:Daisysdailies@sibertstrategygroup.com">Daisysdailies@sibertstrategygroup.com</a>
+		<a href={`mailto:${SITE.email}`}>{SITE.email}</a>
 		or to the Office of the Privacy Commissioner at
 		<a href="https://www.privacy.org.nz" target="_blank" rel="noopener noreferrer">privacy.org.nz</a>.
 	</p>
 
-	<h2>13. Changes to This Privacy Policy</h2>
+	<h2 id="changes">12. Changes to This Privacy Policy</h2>
 
 	<p>
 		We may update this Privacy Policy from time to time. When we make changes, we will update the
@@ -445,13 +485,13 @@ import Callout from '../components/Callout.astro';
 		periodically to stay informed about how we are protecting your information.
 	</p>
 
-	<h2>14. Contact Us</h2>
+	<h2 id="contact">13. Contact Us</h2>
 
 	<Callout tone="important">
 		<p>If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
 		<p>
 			<strong>Sibert Strategy Group</strong><br />
-			Email: <a href="mailto:Daisysdailies@sibertstrategygroup.com">Daisysdailies@sibertstrategygroup.com</a>
+			Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
 		</p>
 	</Callout>
 

@@ -1,0 +1,35 @@
+---
+import { icons, type IconName } from './icons';
+
+interface Props {
+	icon: IconName;
+	/** Any CSS colour; usually one of the `--color-petal-*` variables. */
+	color: string;
+	size?: 'sm' | 'md';
+	class?: string;
+}
+
+const { icon, color, size = 'md', class: className = '' } = Astro.props;
+
+const box = size === 'sm' ? 'h-10 w-10 rounded-xl' : 'h-12 w-12 rounded-2xl';
+const px = size === 'sm' ? 20 : 24;
+---
+
+<span
+	class:list={['flex shrink-0 items-center justify-center', box, className]}
+	style={`background-color: color-mix(in srgb, ${color} 20%, white)`}
+>
+	<svg
+		width={px}
+		height={px}
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="1.7"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+		style={`color: color-mix(in srgb, ${color} 72%, #16203A)`}
+		set:html={icons[icon]}
+	/>
+</span>

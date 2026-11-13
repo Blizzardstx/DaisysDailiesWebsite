@@ -10,7 +10,12 @@ export default defineConfig({
   // Firebase Hosting serves this project with cleanUrls + trailingSlash: false,
   // so canonical URLs and sitemap entries must be extensionless and slash-free.
   trailingSlash: 'never',
-  integrations: [sitemap()],
+  // Astro's HTML compression drops the space between a word at the end of one
+  // source line and a link at the start of the next ("see ourPrivacy Policy").
+  // The legal pages are full of that pattern, so compression stays off.
+  compressHTML: false,
+  // /download is a noindex redirect page, so it stays out of the sitemap.
+  integrations: [sitemap({ filter: (page) => !/\/download\/?$/.test(page) })],
   fonts: [
     {
       provider: fontProviders.google(),

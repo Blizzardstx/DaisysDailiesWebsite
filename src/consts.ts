@@ -1,13 +1,14 @@
 export const SITE = {
 	name: "Daisy's Dailies",
 	company: 'Sibert Strategy Group',
-	tagline: 'The visual daily planner for families',
+	tagline: 'The visual day and week planner for families',
 	description:
-		"Turn your errands into a flower. Daisy's Dailies is the visual way for families to plan daily tasks, appointments, and routes together.",
+		"Turn your errands into a flower. Daisy's Dailies is the visual way for families to plan the day and the week — errands, appointments, routes, and who's doing what.",
 	email: 'daisysdailies@sibertstrategygroup.com',
 } as const;
 
-export const APP_STORE_URL = 'https://apps.apple.com/app/id6758970280';
+export const APP_STORE_ID = '6758970280';
+export const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
 export const PLAY_STORE_URL =
 	'https://play.google.com/store/apps/details?id=com.sibertstrategygroup.daisysdailies';
 
@@ -37,7 +38,7 @@ export const FOOTER_LINKS = [
 		title: 'Support',
 		links: [
 			{ href: '/contact-us', label: 'Contact us' },
-			{ href: '/data-deletion', label: 'Delete your data' },
+			{ href: '/download', label: 'Get the app' },
 			{ href: `mailto:${SITE.email}`, label: 'Email support' },
 		],
 	},

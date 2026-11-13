@@ -4,7 +4,55 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import StoreButtons from '../components/StoreButtons.astro';
 import FlowerGraphic from '../components/FlowerGraphic.astro';
-import { SITE } from '../consts';
+import IconBadge from '../components/home/IconBadge.astro';
+import QuickAddMock from '../components/home/QuickAddMock.astro';
+import RepeatsMock from '../components/home/RepeatsMock.astro';
+import WeekMock from '../components/home/WeekMock.astro';
+import PlanWeekMock from '../components/home/PlanWeekMock.astro';
+import DownloadQr from '../components/DownloadQr.astro';
+import { icons, type IconName } from '../components/home/icons';
+import { APP_STORE_ID, SITE } from '../consts';
+
+/**
+ * Tier numbers, as built for app version 2.0.0. The pricing cards and the FAQ
+ * answers below are all generated from this object — change a number here and
+ * every mention on the page follows.
+ *
+ * "Unlimited" is only true for Pro route stops and Pro repeats. The free AI
+ * allowance is a one-time 10, not a monthly one.
+ */
+const TIERS = {
+	trialDays: 14,
+	free: { flowers: 5, petals: 12, members: 2, repeats: 3, routeStops: 5, uncappedRoutes: 3, aiRequests: 10 },
+	pro: { flowers: 50, petals: 24, members: 10, aiRequestsPerMonth: 300 },
+	/** US dollars. The stores set the local price in other countries. */
+	price: { monthly: 4.99, yearly: 29.99, lifetime: 74.99 },
+} as const;
+
+const { trialDays, free, pro, price } = TIERS;
+
+/** What the yearly plan works out to per month, e.g. "2.50". */
+const yearlyPerMonth = (price.yearly / 12).toFixed(2);
+
+/** The 12 app languages, from SUPPORTED_LOCALES in the app's src/i18n. */
+const languages = [
+	'English',
+	'Chinese (Simplified)',
+	'Dutch',
+	'French',
+	'German',
+	'Italian',
+	'Japanese',
+	'Korean',
+	'Polish',
+	'Portuguese',
+	'Spanish',
+	'Turkish',
+];
+const languageList = `${languages.slice(0, -1).join(', ')}, and ${languages.at(-1)}`;
+
+const description =
+	"Turn your errands into a flower. Daisy's Dailies is the visual way for families to plan the day and the week — errands, appointments, routes, and who's doing what.";
 
 const steps = [
 	{
@@ -16,7 +64,7 @@ const steps = [
 	{
 		number: '02',
 		title: 'Add your petals',
-		body: 'Petals can be a stop with its own list — the pharmacy, the school run, the hardware store.',
+		body: 'Type them, say them, or let them repeat. The pharmacy, the school run, the Saturday hardware store trip.',
 		color: 'var(--color-petal-teal)',
 	},
 	{
@@ -27,7 +75,7 @@ const steps = [
 	},
 ];
 
-const features = [
+const essentials: { title: string; body: string; color: string; icon: IconName }[] = [
 	{
 		title: 'Visual planning',
 		body: 'Every errand becomes a petal on your flower. See your whole day at a glance, not a wall of checkboxes.',
@@ -35,110 +83,295 @@ const features = [
 		icon: 'flower',
 	},
 	{
-		title: 'Family sharing',
-		body: 'Assign stops, split the list, and stay in sync with up to 10 people in your household.',
-		color: 'var(--color-petal-rose)',
-		icon: 'people',
-	},
-	{
 		title: 'Route planning',
-		body: 'Optimize the order of your stops and see real travel times between them before you leave the house.',
+		body: 'Optimize the order of your stops and see real travel times between them before you leave the house. Tell the AI what matters, like “pharmacy before 5.”',
 		color: 'var(--color-petal-teal)',
 		icon: 'route',
 	},
 	{
 		title: 'Appointments included',
-		body: 'Track appointments on every plan, no gate, no upsell. Add Pro and it becomes set-it-and-forget-it — synced automatically with your phone’s calendar, so new appointments show up without you lifting a finger.',
+		body: 'Track appointments on every plan, no gate, no upsell. Add Pro and the calendars you choose flow in on their own — new events on your phone show up without you lifting a finger.',
 		color: 'var(--color-petal-sky)',
 		icon: 'calendar',
 	},
 	{
 		title: 'Family notifications',
-		body: 'Everyone gets a nudge when a stop is assigned or a petal is checked off, so no one has to ask “did you get that?”',
+		body: 'A nudge when a stop is assigned or done, an evening heads-up for tomorrow, and a Sunday recap of who did what. So no one has to ask “did you get that?”',
 		color: 'var(--color-petal-amber)',
 		icon: 'bell',
 	},
+];
+
+/** Smaller features that shipped before 2.0 and were never on the site. */
+const extras: { title: string; body: string; color: string; icon: IconName }[] = [
 	{
-		title: 'Privacy first',
-		body: 'No ads. No data sales. Pro members keep the lights on — that’s how we stay independent.',
+		title: 'Favorite petals',
+		body: 'Keep the stops you use most a tap away.',
+		color: 'var(--color-petal-sun)',
+		icon: 'star',
+	},
+	{
+		title: 'Saved places',
+		body: 'Your own address book — name, address, and notes for the places you go.',
+		color: 'var(--color-petal-coral)',
+		icon: 'pin',
+	},
+	{
+		title: 'Search',
+		body: 'Find that one stop or list item without scrolling for it.',
+		color: 'var(--color-petal-teal)',
+		icon: 'search',
+	},
+	{
+		title: 'Home-screen shortcuts',
+		body: 'Put a petal on your phone’s home screen and open it in one tap.',
+		color: 'var(--color-petal-blue)',
+		icon: 'shortcut',
+	},
+	{
+		title: 'Shareable flower links',
+		body: 'Send a flower to someone with a link.',
+		color: 'var(--color-petal-rose)',
+		icon: 'link',
+	},
+	{
+		title: 'Petal styles',
+		body: 'Pick the look that suits your flowers.',
+		color: 'var(--color-petal-lilac)',
+		icon: 'brush',
+	},
+	{
+		title: 'Dark mode',
+		body: 'Easier on the eyes when you plan tomorrow tonight.',
 		color: 'var(--color-petal-violet)',
-		icon: 'shield',
+		icon: 'moon',
+	},
+	{
+		title: `${languages.length} languages`,
+		body: 'The app — and every notification — in the language you choose.',
+		color: 'var(--color-petal-lime)',
+		icon: 'globe',
 	},
 ];
 
-/** Inner markup for each 24×24 feature icon; stroked with `currentColor`. */
-const icons: Record<string, string> = {
-	flower: `<ellipse cx="12" cy="7" rx="2.6" ry="4"/>
-		<ellipse cx="12" cy="17" rx="2.6" ry="4"/>
-		<ellipse cx="7" cy="12" rx="4" ry="2.6"/>
-		<ellipse cx="17" cy="12" rx="4" ry="2.6"/>
-		<circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none"/>`,
-	people: `<circle cx="9" cy="8" r="3.2"/>
-		<path d="M3.5 19.5c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/>
-		<circle cx="17.3" cy="9.6" r="2.3"/>
-		<path d="M16.4 14.7c2.6-.4 4.6 1.4 4.6 4.1"/>`,
-	route: `<path d="M6 3.5a3 3 0 0 1 3 3c0 2.1-3 5.5-3 5.5S3 8.6 3 6.5a3 3 0 0 1 3-3Z"/>
-		<circle cx="6" cy="6.4" r="1"/>
-		<path d="M18 12.8a3 3 0 0 1 3 3c0 2.1-3 5.5-3 5.5s-3-3.4-3-5.5a3 3 0 0 1 3-3Z"/>
-		<circle cx="18" cy="15.7" r="1"/>
-		<path d="M9.4 8.4h3a3.3 3.3 0 0 1 0 6.6h-2.6a3.3 3.3 0 0 0 0 6.6h4.7" stroke-dasharray="2.8 2.8"/>`,
-	calendar: `<rect x="3.2" y="5" width="17.6" height="16" rx="3.2"/>
-		<path d="M8 3v4M16 3v4M3.2 10.2h17.6"/>
-		<path d="M8.7 14.8l2.1 2.1 4.3-4.3"/>`,
-	bell: `<path d="M12 3.5c-2.7 0-4.6 2.1-4.6 4.8v3c0 .9-.4 1.7-1 2.4l-.9 1a1 1 0 0 0 .7 1.7h11.6a1 1 0 0 0 .7-1.7l-.9-1c-.6-.7-1-1.5-1-2.4v-3c0-2.7-1.9-4.8-4.6-4.8Z"/>
-		<path d="M9.7 19.5a2.6 2.6 0 0 0 4.6 0"/>`,
-	shield: `<path d="M12 2.8 4.9 5.8v5.6c0 4.4 3 8.4 7.1 9.8 4.1-1.4 7.1-5.4 7.1-9.8V5.8L12 2.8Z"/>
-		<path d="M8.9 12.1l2.2 2.2 4.2-4.4"/>`,
-};
-
 const freePlan = [
-	'5 flowers',
-	'12 petals per flower',
-	'2 family members',
-	'Route planning for up to 5 stops',
+	`${free.flowers} flowers, ${free.petals} petals per flower`,
+	`${free.members} family members`,
+	`${free.repeats} repeating petals & appointments at a time`,
+	`Route planning for up to ${free.routeStops} stops (your first ${free.uncappedRoutes} routes have no cap)`,
+	`${free.aiRequests} AI requests to try Quick Add & AI route optimization`,
+	'Family Week: today’s view',
 	'Appointments & notifications',
 ];
 
 const proPlan = [
-	'50 flowers',
-	'24 petals per flower',
-	'10 family members',
-	'Unlimited route stops + AI route optimization',
+	`${pro.flowers} flowers, ${pro.petals} petals per flower`,
+	`${pro.members} family members`,
+	'Unlimited repeating petals & appointments',
+	'Unlimited route stops',
+	`${pro.aiRequestsPerMonth} AI requests a month for Quick Add, Plan My Week & route optimization`,
+	'Family Week: the full week, plus who has what',
+	'Plan My Week',
 	'Calendar import & sync, real-time travel times',
 ];
 
-const faqs = [
+/** Wording here follows the Privacy Policy; keep the two in step. */
+const privacyPoints: { title: string; body: string; icon: IconName }[] = [
 	{
-		q: 'What exactly is a “flower”?',
-		a: 'A flower is a container for one day, trip, or project. Each petal around it is a single stop or task, and each petal holds its own checklist of items. It is the same information a to-do app would show you — just arranged so you can read the whole thing in one glance.',
+		title: 'Your voice stays on your phone',
+		body: 'Speech recognition runs entirely on your device. Your voice is never recorded, stored, or sent to us or to any third party.',
+		icon: 'mic',
 	},
 	{
-		q: 'Do I need to pay to use it?',
-		a: 'No. The free tier covers 5 flowers, 12 petals each, 2 family members, and route planning for up to 5 stops. Appointments and calendar event import are included on every tier. Pro raises the limits and adds AI route optimization and real-time travel times.',
+		title: 'Names are swapped out',
+		body: 'AI features run only when you start them. Family members’ first names are replaced with placeholders before anything is sent.',
+		icon: 'swap',
 	},
 	{
-		q: 'How does family sharing work?',
-		a: 'One person creates the family and invites the others. Everyone in the family sees the same flowers, petals, and items, so a stop crossed off by one person is crossed off for everyone. Free families hold 2 people; Pro families hold up to 10.',
+		title: 'Your data is yours',
+		body: 'Export your data or delete your account whenever you like, right from Settings.',
+		icon: 'export',
+	},
+];
+
+/** An inline link inside an FAQ answer. Answers are rendered as HTML. */
+const faqLink = (href: string, label: string) =>
+	`<a href="${href}" class="font-semibold text-brand-500 underline-offset-4 hover:underline">${label}</a>`;
+
+/**
+ * FAQ, grouped by topic. Tier numbers and prices come from TIERS, so they stay in
+ * step with the pricing cards. Answers are HTML strings (for the links), so keep
+ * them to plain text plus faqLink().
+ */
+const faqGroups: { id: string; title: string; items: { q: string; a: string }[] }[] = [
+	{
+		id: 'faq-getting-started',
+		title: 'Getting started',
+		items: [
+			{
+				q: 'What exactly is a “flower”?',
+				a: 'A flower is a container for one day, trip, or project. Each petal around it is a single stop or task, and each petal holds its own checklist of items. It’s the same information a to-do app would show you, just arranged so you can read the whole thing in one glance.',
+			},
+			{
+				q: 'How do I sign up?',
+				a: 'Sign in with Apple, Google, or an email address. You need to be 13 or older (16 or older in the EU). If you use email, you’ll confirm your address before you create or join a family.',
+			},
+			{
+				q: 'Do I need an internet connection?',
+				a: 'Yes. Daisy’s Dailies keeps your whole family in sync in real time, so it needs a connection to save changes. If you lose signal, a banner tells you, and your changes save again once you’re back online.',
+			},
+			{
+				q: 'Which devices are supported?',
+				a: 'Daisy’s Dailies runs on iPhone, iPad, and Android phones and tablets. Your data syncs across every device you sign in on.',
+			},
+			{
+				q: 'Is it available in my language?',
+				a: `Daisy’s Dailies comes in ${languages.length} languages: ${languageList}. Every notification arrives in the language you use the app in.`,
+			},
+			{
+				q: 'Is there a dark mode?',
+				a: 'Yes. Choose light, dark, or match your phone’s setting in Settings.',
+			},
+		],
 	},
 	{
-		q: 'Is my family’s data sold or used for ads?',
-		a: 'No. There are no ads in the app and we do not sell your data. Pro subscriptions are the only thing funding development, which is exactly why we can keep it that way.',
+		id: 'faq-planning',
+		title: 'Planning your day',
+		items: [
+			{
+				q: 'What is Plan Your Day?',
+				a: 'It’s one list of everything happening today: the stops you’ve added to your day, petals scheduled for today, and today’s appointments. Pick a departure time and the app estimates when you’ll reach each stop.',
+			},
+			{
+				q: 'Can I get directions to my stops?',
+				a: 'Yes. Choose the stops, put them in order, and the app hands the route to Google Maps, Apple Maps, or Waze. Before you leave, a checklist reminds you what to bring, return, pick up, or drop off.',
+			},
+			{
+				q: 'Can the app put my stops in the best order?',
+				a: `Yes. AI route optimization suggests an order based on your stops, their times, and any note you add, such as “pharmacy before it closes at 6.” On Free, you get ${free.aiRequests} AI requests to try it, shared with Quick Add. Pro includes ${pro.aiRequestsPerMonth} a month.`,
+			},
+			{
+				q: 'How are travel times estimated?',
+				a: 'On Free, travel times are estimated from distance and time of day. Pro uses real-time traffic.',
+			},
+			{
+				q: 'Can I make an errand repeat?',
+				a: `Yes. Petals and appointments can repeat daily, weekly (on the days you choose), or monthly, with an optional end date. A repeating petal moves to its next date when you complete or skip it. If you miss it, it stays overdue until you deal with it, and you can have its checklist uncheck itself each time. Appointments move forward on their own once their day ends. Free families can have ${free.repeats} repeats going at once; Pro has no limit.`,
+			},
+			{
+				q: 'Are appointments included on the free plan?',
+				a: 'Yes. Every plan includes appointments. You can create them by hand or start one from a place saved in your Address Book. Appointments are removed automatically 30 days after their date.',
+			},
+			{
+				q: 'Can I import events from my calendar?',
+				a: 'Yes, with Pro. Daisy’s Dailies reads the events you choose from your phone’s calendar and can keep them in sync. It never writes to or changes your calendar.',
+			},
+			{
+				q: 'What is the Address Book?',
+				a: 'It’s a list of places you visit often, like your doctor, the school, or the salon. Saving a place once lets you fill in its address and usual duration with a tap when you add an appointment.',
+			},
+			{
+				q: 'Can I add things by voice or in plain words?',
+				a: 'Yes. Quick Add lets you type or say something like “pick up dry cleaning Thursday and get milk,” and AI turns it into petals and items. You review everything before it’s saved, and you can undo it afterward.',
+			},
+			{
+				q: 'Does voice input work on every phone?',
+				a: 'The microphone appears on phones that can recognize speech on the device in the language you use the app in. On iPhone, the app’s language also needs to match the phone’s language. If you don’t see it, you can type instead. Quick Add works the same either way.',
+			},
+			{
+				q: 'I deleted something by mistake. Can I get it back?',
+				a: 'Usually, yes. After you delete an item, a petal, or an Address Book entry, an Undo button appears for a few seconds. Deleting a whole flower or your account asks you to confirm first and can’t be undone.',
+			},
+			{
+				q: 'Can I put a stop on my home screen?',
+				a: 'On Android, long-press a petal and choose Add to Home Screen to get its own icon. On iPhone, the same option gives you a link that opens the petal directly.',
+			},
+		],
 	},
 	{
-		q: 'How do I cancel or delete my account?',
-		a: 'Subscriptions are billed by the App Store or Google Play, so you cancel them in your device settings. To remove your data, use Settings → Delete Account in the app, or follow the step-by-step instructions on our data deletion page.',
+		id: 'faq-family',
+		title: 'Family sharing',
+		items: [
+			{
+				q: 'How does family sharing work?',
+				a: `One person creates the family and invites the others. Everyone sees the same flowers, petals, and items, so a stop crossed off by one person is crossed off for everyone. The Family tab opens on a week view that shows who has what, and anyone who can edit can tap “I’ll take it” on a stop nobody has claimed. Free families hold ${free.members} people. Pro families hold up to ${pro.members}.`,
+			},
+			{
+				q: 'How do I invite someone?',
+				a: 'Open the Family tab and create an invite code. It works for 24 hours. The other person enters it after signing up.',
+			},
+			{
+				q: 'Can I control what family members can change?',
+				a: 'Yes. The family owner gives each member Write access (can add and edit) or Read access (can view only).',
+			},
+			{
+				q: 'Does everyone in the family need to buy Pro?',
+				a: 'No. One Pro purchase upgrades the whole family, whether it’s monthly, yearly, or lifetime. If the person who paid leaves the family or deletes their account, the family goes back to Free.',
+			},
+			{
+				q: 'Will I be notified when something is assigned to me?',
+				a: 'Yes. Notifications can tell you when a stop is assigned to you, when a stop you assigned is done, and when an appointment is coming up. You can also get a morning summary at a time you pick, an evening “plan tomorrow” reminder, and a Sunday recap of the week. Each one can be turned on or off in Settings.',
+			},
+			{
+				q: 'What is Plan My Week?',
+				a: 'It’s a Pro feature in the Family tab. AI looks at your flexible errands, your fixed appointments, and the hours you’ve said you’re free, then suggests a day for each errand. Nothing changes until you apply the suggestions, and one Undo reverses them all.',
+			},
+		],
 	},
 	{
-		q: 'Which devices are supported?',
-		a: 'Daisy’s Dailies runs on iPhone, iPad, and Android phones and tablets. Your data syncs across every device you sign in on.',
+		id: 'faq-pricing',
+		title: 'Plans and pricing',
+		items: [
+			{
+				q: 'Do I need to pay to use it?',
+				a: `No. The free tier covers ${free.flowers} flowers, ${free.petals} petals each, ${free.members} family members, ${free.repeats} repeats going at once, and route planning for up to ${free.routeStops} stops. Your first ${free.uncappedRoutes} routes have no stop limit, and you get ${free.aiRequests} AI requests to try Quick Add and route optimization. Appointments and notifications are included on every tier, and every new family starts with ${trialDays} days of Pro, no card needed. Pro raises the limits and adds the full Family Week, Plan My Week, calendar import and sync, real-time travel times, and ${pro.aiRequestsPerMonth} AI requests a month.`,
+			},
+			{
+				q: `What happens after the ${trialDays}-day Pro trial?`,
+				a: `Your family moves to Free. Nothing you made is deleted, and there’s nothing to cancel because we never asked for a card. If you have more than ${free.repeats} repeats going, the extras pause, and members past the first ${free.members} become read-only, until you upgrade or trim the list. Already using the free app? You get the same ${trialDays} days once, the first time you open version 2.0.`,
+			},
+			{
+				q: 'What Pro plans are there?',
+				a: `Monthly ($${price.monthly}), yearly ($${price.yearly}, about $${yearlyPerMonth} a month), or lifetime access for a one-time $${price.lifetime} that never renews. Each one covers your whole family, and every new family can try Pro free for ${trialDays} days first. Prices are in US dollars; the App Store and Google Play show your local price in other countries.`,
+			},
+			{
+				q: 'I got a new phone. How do I get Pro back?',
+				a: 'Sign in to the same account. Pro belongs to your family, so it comes back with you. If it doesn’t, use Restore Purchases in Settings.',
+			},
+		],
+	},
+	{
+		id: 'faq-privacy',
+		title: 'Privacy and your account',
+		items: [
+			{
+				q: 'What does the AI see?',
+				a: `Only what it needs, and only when you start it. Quick Add sends the text you type or say, never your voice. Plan My Week sends the names, times, and durations of the stops being planned, with locations rounded to about 1 km. Family members’ first names are replaced with placeholders before anything is sent, and no account identifiers go with it. The AI features run on Google Gemini, and our ${faqLink('/privacy-policy', 'Privacy Policy')} lists exactly what each one sends.`,
+			},
+			{
+				q: 'Is my family’s data sold or used for ads?',
+				a: 'No. There are no ads in the app and we don’t sell your data. Pro purchases are the only thing funding development, which is exactly why we can keep it that way.',
+			},
+			{
+				q: 'How do I cancel or delete my account?',
+				a: `Subscriptions are billed by the App Store or Google Play, so you cancel them in your device settings. Lifetime is a one-time purchase, so there’s nothing to cancel. To remove your data, use Settings → Delete Account in the app, or follow the step-by-step instructions on our ${faqLink('/data-deletion', 'data deletion page')}. If you own the family, deleting your account deletes the family and everything in it for everyone.`,
+			},
+			{
+				q: 'How do I contact you?',
+				a: `Email us at ${faqLink(`mailto:${SITE.email}`, SITE.email)} or use Contact Us in Settings. We reply within 24–48 hours.`,
+			},
+		],
 	},
 ];
 ---
 
 <Layout
-	title="Daisy's Dailies — Visual Daily Planner for Families"
-	description={SITE.description}
+	title="Daisy's Dailies — Visual Family Planner for Your Day and Week"
+	description={description}
 >
+	{/* Safari on iPhone and iPad shows an "open in the App Store" bar for this. */}
+	<meta slot="head" name="apple-itunes-app" content={`app-id=${APP_STORE_ID}`} />
+
 	<SiteHeader />
 
 	<main id="main">
@@ -151,33 +384,34 @@ const faqs = [
 			</div>
 
 			<div
-				class="relative mx-auto grid max-w-6xl items-center gap-14 px-5 py-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:py-24"
+				class="relative mx-auto grid max-w-6xl items-center gap-20 px-5 py-16 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-24"
 			>
 				<div class="animate-bloom min-w-0 text-center lg:text-left">
-					<p
-						class="eyebrow inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/80"
+					<a
+						href="#features"
+						class="eyebrow inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-white/80 transition hover:bg-white/15"
 					>
 						<span class="inline-block h-1.5 w-1.5 rounded-full bg-petal-sun" aria-hidden="true"
 						></span>
-						On iOS &amp; Android
-					</p>
+						New in 2.0 · Plan the whole week
+					</a>
 
 					<h1 class="mt-6 text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-[3.4rem]">
-						Your family's day,
+						Your family's day,{' '}
 						<span
-							class="bg-[linear-gradient(100deg,var(--color-petal-sun),var(--color-petal-rose),var(--color-petal-sky))] bg-clip-text text-transparent"
+							class="block bg-[linear-gradient(100deg,var(--color-petal-sun),var(--color-petal-rose),var(--color-petal-sky))] bg-clip-text pb-1 text-transparent"
 						>
 							in full bloom
 						</span>
 					</h1>
 
 					<p class="mx-auto mt-5 max-w-lg text-lg leading-relaxed text-white/75 lg:mx-0">
-						Errands, appointments, and to-dos laid out as petals around a single flower — so
-						everyone can see the whole day without reading a list.
+						Errands, appointments, and to-dos laid out as petals around a single flower — plus a
+						week view that shows who's doing what.
 					</p>
 
 					<div id="download" class="mt-9 scroll-mt-28">
-						<StoreButtons align="start" class="lg:justify-start" />
+						<StoreButtons align="start" class="sm:justify-center lg:justify-start" />
 					</div>
 
 					<ul
@@ -185,7 +419,7 @@ const faqs = [
 					>
 						<li class="flex items-center gap-2">
 							<span class="h-1.5 w-1.5 rounded-full bg-petal-teal" aria-hidden="true"></span>
-							Free to start
+							{trialDays} days of Pro, no card
 						</li>
 						<li class="flex items-center gap-2">
 							<span class="h-1.5 w-1.5 rounded-full bg-petal-rose" aria-hidden="true"></span>
@@ -193,28 +427,58 @@ const faqs = [
 						</li>
 						<li class="flex items-center gap-2">
 							<span class="h-1.5 w-1.5 rounded-full bg-petal-lilac" aria-hidden="true"></span>
-							Up to 10 family members
+							Up to {pro.members} family members
 						</li>
 					</ul>
+
+					<DownloadQr class="mt-9" />
 				</div>
 
 				<div class="relative mx-auto w-full min-w-0 max-w-md lg:max-w-none">
 					<div
-						class="animate-drift rounded-5xl border border-white/10 bg-white/[0.07] p-5 shadow-lift-lg backdrop-blur-sm sm:p-7"
+						class="animate-drift rounded-5xl border border-white/10 bg-white/[0.07] p-5 pt-24 shadow-lift-lg backdrop-blur-sm sm:p-7 sm:pt-16 lg:pt-7"
 					>
 						<FlowerGraphic />
-					</div>
-
-					<div
-						class="absolute -left-2 top-6 rounded-2xl border border-white/15 bg-navy-900/85 px-3.5 py-2.5 shadow-lift backdrop-blur sm:-left-6"
-					>
-						<p class="text-[10px] font-semibold uppercase tracking-widest text-white/50">
-							Saturday
+						<p class="mt-2 text-sm font-semibold text-white">
+							Saturday <span class="font-normal text-white/55">· 4 of 12 stops done</span>
 						</p>
-						<p class="text-sm font-semibold text-white">4 of 12 stops done</p>
 					</div>
 
-					<div class="absolute -right-1 bottom-8 flex flex-col gap-2.5 sm:-right-4">
+					{/* Quick Add: one sentence in, one repeating petal out. */}
+					<div
+						class="absolute -left-2 -top-12 w-[14.5rem] rounded-2xl border border-white/15 bg-navy-900/90 p-3.5 shadow-lift backdrop-blur sm:-left-6"
+					>
+						<p
+							class="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest text-white/50"
+						>
+							<svg
+								width="12"
+								height="12"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+								set:html={icons.wand}
+							/>
+							Quick Add
+						</p>
+						<p class="mt-1.5 text-sm font-semibold leading-snug text-white">
+							“Soccer practice every Tuesday at 5”
+						</p>
+						<div class="mt-2.5 flex items-center gap-2 rounded-xl bg-white/10 px-2.5 py-2">
+							<span class="h-2.5 w-2.5 shrink-0 rounded-full bg-petal-lime" aria-hidden="true"
+							></span>
+							<p class="text-xs font-semibold leading-snug text-white">
+								Soccer practice
+								<span class="block font-normal text-white/55">Tue 5:00pm · repeats weekly</span>
+							</p>
+						</div>
+					</div>
+
+					<div class="absolute -right-1 bottom-14 flex flex-col gap-2.5 sm:-right-4 sm:bottom-16">
 						<div
 							class="flex items-center gap-2.5 rounded-2xl border border-white/15 bg-navy-900/85 px-3.5 py-2.5 shadow-lift backdrop-blur"
 						>
@@ -286,71 +550,210 @@ const faqs = [
 		</section>
 
 		<!-- Features -->
-		<section id="features" class="scroll-mt-24 border-y border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28">
-			<div class="reveal mx-auto max-w-6xl">
-				<div class="max-w-2xl">
+		<section
+			id="features"
+			class="scroll-mt-24 border-y border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28"
+		>
+			<div class="mx-auto max-w-6xl">
+				<div class="reveal max-w-2xl">
 					<p class="eyebrow text-brand-500">Features</p>
 					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
-						Everything a busy household actually needs
+						Plan the day. Run the week.
 					</h2>
 					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
-						Built around real errand days — not around a productivity philosophy.
+						Built around real errand days — not around a productivity philosophy. Version 2.0
+						takes the same flower and stretches it across the whole week, for the whole family.
 					</p>
 				</div>
 
-				<div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-					{
-						features.map((feature) => (
-							<article class="group rounded-4xl border border-navy-100 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-navy-200 hover:shadow-lift">
-								<span
-									class="flex h-12 w-12 items-center justify-center rounded-2xl transition group-hover:scale-105"
-									style={`background-color: color-mix(in srgb, ${feature.color} 20%, white)`}
-								>
-									<svg
-										width="24"
-										height="24"
-										viewBox="0 0 24 24"
-										fill="none"
-										stroke="currentColor"
-										stroke-width="1.7"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										aria-hidden="true"
-										style={`color: color-mix(in srgb, ${feature.color} 72%, #16203A)`}
-										set:html={icons[feature.icon]}
+				<div class="mt-14 grid gap-5 lg:grid-cols-12">
+					<article
+						class="reveal flex flex-col rounded-4xl border border-navy-100 bg-white p-7 shadow-sm sm:p-9 lg:order-1 lg:col-span-7"
+					>
+						<div class="flex items-center gap-3">
+							<IconBadge icon="mic" color="var(--color-petal-blue)" />
+							<span class="eyebrow text-navy-400">Quick Add</span>
+						</div>
+						<h3 class="mt-5 text-2xl font-extrabold text-navy-900">Just say it</h3>
+						<p class="mt-2 max-w-xl leading-relaxed text-ink-soft">
+							“Dentist for Sam, Tuesday at 4.” Quick Add turns what you type or say into a
+							petal, with the day, time, and person filled in. You check it before it's saved.
+						</p>
+						<div class="mt-7">
+							<QuickAddMock />
+						</div>
+						<p class="mt-auto pt-6 text-[13px] leading-relaxed text-navy-500">
+							Every family gets {free.aiRequests} AI requests to try it; Pro includes {
+								pro.aiRequestsPerMonth
+							} a month. Voice input on supported phones.
+						</p>
+					</article>
+
+					<article
+						class="reveal flex flex-col rounded-4xl border border-navy-100 bg-white p-7 shadow-sm sm:p-9 lg:order-2 lg:col-span-5"
+					>
+						<div class="flex items-center gap-3">
+							<IconBadge icon="repeat" color="var(--color-petal-teal)" />
+							<span class="eyebrow text-navy-400">Repeats</span>
+						</div>
+						<h3 class="mt-5 text-2xl font-extrabold text-navy-900">Set it once</h3>
+						<p class="mt-2 leading-relaxed text-ink-soft">
+							Trash night, piano lessons, the weekly grocery run. Make any petal or appointment
+							repeat, and it comes back on its own — list unchecked and ready.
+						</p>
+						<div class="mt-7">
+							<RepeatsMock />
+						</div>
+						<p class="mt-auto pt-6 text-[13px] leading-relaxed text-navy-500">
+							Daily, weekly, or monthly. Free keeps {free.repeats} repeats going at once; Pro has
+							no limit.
+						</p>
+					</article>
+
+					<article
+						class="reveal flex flex-col rounded-4xl border border-navy-100 bg-white p-7 shadow-sm sm:p-9 lg:order-4 lg:col-span-7"
+					>
+						<div class="flex items-center gap-3">
+							<IconBadge icon="week" color="var(--color-petal-rose)" />
+							<span class="eyebrow text-navy-400">Family Week</span>
+						</div>
+						<h3 class="mt-5 text-2xl font-extrabold text-navy-900">
+							The whole week, for the whole family
+						</h3>
+						<p class="mt-2 max-w-xl leading-relaxed text-ink-soft">
+							See the next 7 days for everyone, and who has what. Spot a stop nobody's claimed?
+							Tap “I'll take it.” Share it all with up to {pro.members} people in your household.
+						</p>
+						<div class="mt-7">
+							<WeekMock />
+						</div>
+						<p class="mt-auto pt-6 text-[13px] leading-relaxed text-navy-500">
+							Free shows today. Pro shows the full week and how many stops each person has.
+						</p>
+					</article>
+
+					<article
+						class="reveal relative flex flex-col overflow-hidden rounded-4xl bg-navy-900 p-7 text-white shadow-lift-lg sm:p-9 lg:order-3 lg:col-span-5"
+					>
+						<div
+							class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(124,91,217,0.45),transparent_65%)]"
+							aria-hidden="true"
+						>
+						</div>
+
+						<div class="relative flex items-center gap-3">
+							<IconBadge icon="wand" color="var(--color-petal-sun)" />
+							<span class="eyebrow text-white/50">Plan My Week</span>
+							<span
+								class="ml-auto rounded-full bg-[linear-gradient(90deg,var(--color-petal-sun),var(--color-petal-rose))] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-navy-900"
+							>
+								Pro
+							</span>
+						</div>
+						<h3 class="relative mt-5 text-2xl font-extrabold">Plan my week</h3>
+						<p class="relative mt-2 leading-relaxed text-white/75">
+							Got a pile of errands and no idea when? One tap finds a day for each, around the
+							appointments and hours you already have. You see the plan before anything moves.
+						</p>
+						<div class="relative mt-7">
+							<PlanWeekMock />
+						</div>
+						<p class="relative mt-auto pt-6 text-[13px] leading-relaxed text-white/55">
+							One tap applies it, one tap undoes it. Included in the {trialDays}-day Pro trial.
+						</p>
+					</article>
+				</div>
+
+				<div class="reveal mt-20">
+					<h3 class="text-2xl font-extrabold text-navy-900">And the everyday essentials</h3>
+					<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+						{
+							essentials.map((feature) => (
+								<article class="group rounded-4xl border border-navy-100 bg-white p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-navy-200 hover:shadow-lift">
+									<IconBadge
+										icon={feature.icon}
+										color={feature.color}
+										class="transition group-hover:scale-105"
 									/>
-								</span>
-								<h3 class="mt-5 text-lg font-bold text-navy-900">{feature.title}</h3>
-								<p class="mt-2 leading-relaxed text-ink-soft">{feature.body}</p>
-							</article>
-						))
-					}
+									<h4 class="mt-5 text-lg font-bold text-navy-900">{feature.title}</h4>
+									<p class="mt-2 text-[15px] leading-relaxed text-ink-soft">{feature.body}</p>
+								</article>
+							))
+						}
+					</div>
 				</div>
 			</div>
 		</section>
 
+		<!-- The little things -->
+		<section class="bg-white px-5 py-20 sm:px-6 lg:py-24">
+			<div class="reveal mx-auto max-w-6xl">
+				<div class="max-w-2xl">
+					<p class="eyebrow text-brand-500">Already built in</p>
+					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
+						The little things add up
+					</h2>
+					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
+						Small touches that save a few taps every day.
+					</p>
+				</div>
+
+				<ul class="mt-12 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
+					{
+						extras.map((extra) => (
+							<li class="flex items-start gap-3.5">
+								<IconBadge icon={extra.icon} color={extra.color} size="sm" />
+								<div class="min-w-0">
+									<h3 class="text-[15px] font-bold text-navy-900">{extra.title}</h3>
+									<p class="mt-1 text-sm leading-relaxed text-ink-soft">{extra.body}</p>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
+
 		<!-- Pricing -->
-		<section id="pricing" class="scroll-mt-24 bg-white px-5 py-20 sm:px-6 lg:py-28">
+		<section
+			id="pricing"
+			class="scroll-mt-24 border-y border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28"
+		>
 			<div class="reveal mx-auto max-w-5xl">
 				<div class="mx-auto max-w-2xl text-center">
 					<p class="eyebrow text-brand-500">Pricing</p>
 					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
-						Free to start, upgrade when you're ready
+						Try everything first. Stay free if you like.
 					</h2>
-					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
-						Notifications are included on every plan — no gate, no upsell.
+				</div>
+
+				<div
+					class="mx-auto mt-8 flex max-w-3xl items-start gap-4 rounded-3xl border border-brand-200 bg-white p-5 shadow-sm sm:items-center sm:p-6"
+				>
+					<span
+						class="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--color-petal-sun),var(--color-petal-rose))] leading-none text-navy-900"
+						aria-hidden="true"
+					>
+						<span class="text-lg font-extrabold">{trialDays}</span>
+						<span class="text-[9px] font-bold uppercase tracking-wider">days</span>
+					</span>
+					<p class="leading-relaxed text-ink-soft">
+						<strong class="font-bold text-navy-900">
+							Every new family starts with {trialDays} days of Pro
+						</strong>{' '}
+						— no card, nothing to cancel. After that, stay on Free as long as you like.
 					</p>
 				</div>
 
-				<div class="mt-14 grid gap-6 lg:grid-cols-2">
+				<div class="mt-8 grid gap-6 lg:grid-cols-2">
 					<div
 						class="flex flex-col rounded-5xl border border-navy-100 bg-white p-8 shadow-sm sm:p-10"
 					>
 						<h3 class="text-xl font-bold text-navy-900">Free</h3>
 						<p class="mt-1 text-sm text-ink-soft">Everything you need to get organized</p>
 						<p class="mt-6 text-4xl font-extrabold text-navy-900">
-							$0<span class="mt-1 block text-base font-semibold text-navy-400">
-								no card, no trial timer</span
+							$0<span class="mt-1 block text-base font-semibold text-navy-500">
+								no card, no time limit</span
 							>
 						</p>
 						<ul class="mt-8 space-y-3.5">
@@ -379,9 +782,9 @@ const faqs = [
 								))
 							}
 						</ul>
-						<p class="mt-auto pt-8 text-xs leading-relaxed text-navy-400">
-							Create an account, plant a flower, and start planning. Upgrade later if you
-							outgrow the limits.
+						<p class="mt-auto pt-8 text-xs leading-relaxed text-navy-500">
+							The {free.aiRequests} free AI requests are a one-time allowance to try the AI features;
+							they don't refill each month.
 						</p>
 					</div>
 
@@ -399,18 +802,42 @@ const faqs = [
 							<span
 								class="rounded-full bg-[linear-gradient(90deg,var(--color-petal-sun),var(--color-petal-rose))] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wider text-navy-900"
 							>
-								Most popular
+								{trialDays} days free
 							</span>
 						</div>
 						<p class="relative mt-1 text-sm text-white/60">
-							For bigger households and bigger days
+							For bigger households and the whole week
 						</p>
 						<p class="relative mt-6 text-4xl font-extrabold">
-							Everything in Free<span class="mt-1 block text-base font-semibold text-white/60"
-								>plus the limits lifted</span
-							>
+							${price.monthly}<span class="text-lg font-semibold text-white/60"> / month</span>
+							<span class="mt-1 block text-base font-semibold text-white/60">
+								after your {trialDays} free days, if you choose to stay
+							</span>
 						</p>
-						<ul class="relative mt-8 space-y-3.5">
+						<dl class="relative mt-5 grid grid-cols-2 gap-3">
+							<div class="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+								<dt class="text-[11px] font-bold uppercase tracking-wider text-white/50">Yearly</dt>
+								<dd class="mt-1 text-lg font-extrabold">
+									${price.yearly}
+									<span class="block text-xs font-medium text-white/60">
+										about ${yearlyPerMonth} a month
+									</span>
+								</dd>
+							</div>
+							<div class="rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3">
+								<dt class="text-[11px] font-bold uppercase tracking-wider text-white/50">
+									Lifetime
+								</dt>
+								<dd class="mt-1 text-lg font-extrabold">
+									${price.lifetime}
+									<span class="block text-xs font-medium text-white/60">pay once</span>
+								</dd>
+							</div>
+						</dl>
+						<p class="relative mt-7 text-sm font-semibold text-white/60">
+							Everything in Free, with the limits lifted:
+						</p>
+						<ul class="relative mt-4 space-y-3.5">
 							{
 								proPlan.map((item) => (
 									<li class="flex items-start gap-3 text-[15px] text-white/85">
@@ -436,19 +863,88 @@ const faqs = [
 								))
 							}
 						</ul>
-						<p class="relative mt-auto pt-8 text-xs leading-relaxed text-white/45">
-							Billed through the App Store or Google Play. Cancel anytime in your device
-							settings.
+						<p class="relative mt-auto pt-8 text-xs leading-relaxed text-white/55">
+							Billed through the App Store or Google Play. Cancel a subscription anytime in your
+							device settings; Lifetime is a one-time purchase. Prices in US dollars and may
+							differ in other countries.
 						</p>
 					</div>
 				</div>
 			</div>
 		</section>
 
+		<!-- Privacy -->
+		<section id="privacy" class="scroll-mt-24 bg-white px-5 py-20 sm:px-6 lg:py-24">
+			<div
+				class="reveal relative mx-auto max-w-6xl overflow-hidden rounded-5xl bg-navy-800 px-7 py-12 text-white sm:px-12 lg:py-14"
+			>
+				<div
+					class="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_120%_at_0%_0%,#3f4d7a_0%,transparent_60%)]"
+					aria-hidden="true"
+				>
+				</div>
+
+				<div class="relative grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+					<div>
+						<p class="eyebrow text-petal-sun">Privacy first</p>
+						<h2 class="mt-3 text-3xl font-extrabold sm:text-4xl">No ads. No data sales.</h2>
+						<p class="mt-4 leading-relaxed text-white/75">
+							Pro members keep the lights on — that's how we stay independent. The same rule
+							covers the new AI features: they get only what they need to do the job.
+						</p>
+						<a
+							href="/privacy-policy"
+							class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-white underline-offset-4 hover:underline"
+						>
+							Read the Privacy Policy
+							<svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+								<path
+									d="M4 10h12M11 5l5 5-5 5"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</a>
+					</div>
+
+					<ul class="space-y-6">
+						{
+							privacyPoints.map((point) => (
+								<li class="flex items-start gap-4">
+									<span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10 text-petal-sun">
+										<svg
+											width="22"
+											height="22"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.7"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											aria-hidden="true"
+											set:html={icons[point.icon]}
+										/>
+									</span>
+									<div>
+										<h3 class="text-lg font-bold">{point.title}</h3>
+										<p class="mt-1 leading-relaxed text-white/70">{point.body}</p>
+									</div>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+		</section>
+
 		<!-- FAQ -->
-		<section id="faq" class="scroll-mt-24 border-t border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28">
+		<section
+			id="faq"
+			class="scroll-mt-24 border-t border-navy-100 bg-navy-50/50 px-5 py-20 sm:px-6 lg:py-28"
+		>
 			<div class="reveal mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-				<div>
+				<div class="lg:sticky lg:top-28 lg:self-start">
 					<p class="eyebrow text-brand-500">FAQ</p>
 					<h2 class="mt-3 text-3xl font-extrabold text-navy-900 sm:text-4xl">
 						Questions, answered
@@ -459,33 +955,54 @@ const faqs = [
 							class="font-semibold text-brand-500 underline-offset-4 hover:underline">Email us</a
 						> — we reply within 24–48 hours.
 					</p>
+					<nav aria-label="FAQ topics" class="mt-8">
+						<ul class="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
+							{
+								faqGroups.map((group) => (
+									<li>
+										<a
+											href={`#${group.id}`}
+											class="inline-flex rounded-full border border-navy-200/70 bg-white px-3.5 py-1.5 text-sm font-semibold text-navy-700 transition hover:border-brand-500 hover:text-brand-500 lg:rounded-lg lg:border-transparent lg:bg-transparent lg:px-0 lg:py-1"
+										>
+											{group.title}
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</nav>
 				</div>
 
-				<div class="divide-y divide-navy-200/70 border-y border-navy-200/70">
+				<div class="space-y-12">
 					{
-						faqs.map((faq) => (
-							<details class="faq group">
-								<summary
-									class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-[17px] font-semibold text-navy-900 transition hover:text-brand-500"
-								>
-									{faq.q}
-									<svg
-										width="20"
-										height="20"
-										viewBox="0 0 20 20"
-										class="shrink-0 text-navy-400 transition duration-300 group-open:rotate-45"
-										aria-hidden="true"
-									>
-										<path
-											d="M10 4v12M4 10h12"
-											stroke="currentColor"
-											stroke-width="1.8"
-											stroke-linecap="round"
-										/>
-									</svg>
-								</summary>
-								<p class="pb-5 pr-8 leading-relaxed text-ink-soft">{faq.a}</p>
-							</details>
+						faqGroups.map((group) => (
+							<div id={group.id} class="scroll-mt-28">
+								<h3 class="eyebrow text-navy-500">{group.title}</h3>
+								<div class="mt-3 divide-y divide-navy-200/70 border-y border-navy-200/70">
+									{group.items.map((faq) => (
+										<details class="faq group">
+											<summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-left text-[17px] font-semibold text-navy-900 transition hover:text-brand-500">
+												{faq.q}
+												<svg
+													width="20"
+													height="20"
+													viewBox="0 0 20 20"
+													class="shrink-0 text-navy-400 transition duration-300 group-open:rotate-45"
+													aria-hidden="true"
+												>
+													<path
+														d="M10 4v12M4 10h12"
+														stroke="currentColor"
+														stroke-width="1.8"
+														stroke-linecap="round"
+													/>
+												</svg>
+											</summary>
+											<p class="pb-5 pr-8 leading-relaxed text-ink-soft" set:html={faq.a} />
+										</details>
+									))}
+								</div>
+							</div>
 						))
 					}
 				</div>
@@ -509,11 +1026,16 @@ const faqs = [
 					class="mx-auto rounded-[20px] shadow-lift-lg"
 					style="height:4.5rem;width:4.5rem"
 				/>
-				<h2 class="mt-7 text-3xl font-extrabold sm:text-4xl">Plan tomorrow in a minute</h2>
+				<h2 class="mt-7 text-3xl font-extrabold sm:text-4xl">
+					Plan tomorrow in a minute. Then the rest of the week.
+				</h2>
 				<p class="mx-auto mt-4 max-w-lg text-lg leading-relaxed text-white/70">
-					Download {SITE.name}, plant your first flower, and see the whole day at a glance.
+					Download {SITE.name}, plant your first flower, and try everything in Pro free for {
+						trialDays
+					} days — no card.
 				</p>
 				<StoreButtons class="mt-9" />
+				<DownloadQr align="center" class="mt-9" />
 			</div>
 		</section>
 	</main>
